@@ -1,7 +1,7 @@
-export default function useLocalStorage(key: string) {
+export default function useLocalStorage(key: string, initialValue?: any) {
     const get = () => {
         const value = window.localStorage.getItem(key);
-        return value ? JSON.parse(value) : null;
+        return value ? JSON.parse(value) : initialValue;
     };
 
     const set = (value: any) => {

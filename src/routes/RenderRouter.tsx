@@ -1,6 +1,6 @@
 import {FC, lazy} from 'react';
 import {useRoutes} from 'react-router-dom';
-import LayoutComponent from '../layouts';
+import {MainLayout, AuthLayout} from '../layouts';
 import appRoute from "./appRoute.ts";
 
 const NotFound = lazy(() => import('../pages/not-found'));
@@ -8,9 +8,9 @@ const NotFound = lazy(() => import('../pages/not-found'));
 const routes = [
     {
         path: '/',
-        element: <LayoutComponent/>,
+        element: <MainLayout/>,
         children: [
-            ...Object.values(appRoute).map(({path, component: Component}) => (
+            ...Object.values(appRoute).filter((path) => path.requiredLogin).map(({path, component: Component}) => (
                 {
                     path,
                     element: <Component />,
@@ -22,6 +22,18 @@ const routes = [
             }
         ]
     },
+    {
+        path: '/auth',
+        element: <AuthLayout />,
+        children: [
+            ...Object.values(appRoute).filter((path) => !path.requiredLogin).map(({path, component: Component}) => (
+                {
+                    path,
+                    element: <Component />,
+                }
+            )),
+        ]
+    }
 ];
 
 const RenderRouter: FC = () => {
