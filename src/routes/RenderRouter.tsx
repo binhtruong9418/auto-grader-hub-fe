@@ -26,7 +26,7 @@ const routes = [
         path: '/auth',
         element: <AuthLayout />,
         children: [
-            ...Object.values(appRoute).filter((path) => !path.requiredLogin).map(({path, component: Component}) => (
+            ...Object.values(appRoute).filter((path) => path.path.startsWith("/auth")).map(({path, component: Component}) => (
                 {
                     path,
                     element: <Component />,
