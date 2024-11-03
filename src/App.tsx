@@ -1,25 +1,17 @@
-import {ThemeProvider} from "@mui/material";
-import {theme} from "./theme";
-import QueryProvider from "./provider/QueryProvider.tsx";
-import Routes from "./routes";
-import {Toaster} from "react-hot-toast";
-import UpdaterProvider from "./provider/UpdaterProvider.tsx";
+import QueryProvider from "@/providers/QueryProvider.tsx";
+import UpdateProvider from "@/providers/UpdateProvider.tsx";
+import AppRoutes from "@/routes/index.tsx";
 
 
 function App() {
-    return (
-        <ThemeProvider theme={theme}>
-            <QueryProvider>
-                <UpdaterProvider>
-                    <Routes/>
-                    <Toaster
-                        position="top-center"
-                        reverseOrder={false}
-                    />
-                </UpdaterProvider>
-            </QueryProvider>
-        </ThemeProvider>
-    )
+	
+	return (
+			<QueryProvider>
+				<UpdateProvider>
+					<AppRoutes/>
+				</UpdateProvider>
+			</QueryProvider>
+	)
 }
 
 export default App

@@ -1,13 +1,13 @@
 import {create} from "zustand";
 
 interface IUserState {
-    userInfo: any,
-    setUserInfo: (userInfo: any) => void
+	userInfo: any,
+	setUserInfo: (userInfo: any) => void
 }
 
 const useUserInfo = create<IUserState>((set) => ({
-    userInfo: null,
-    setUserInfo: (userInfo) => set({userInfo})
+	userInfo: null,
+	setUserInfo: (userInfo) => set({userInfo})
 }));
 
 export default useUserInfo;

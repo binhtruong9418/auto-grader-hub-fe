@@ -1,6 +1,6 @@
 # Auto grader hub Frontend
 
-## Overview 
+## Overview
 This is the frontend for the auto grader hub project. The frontend is built using React and Material-UI, Antd.
 The frontend is responsible for rendering the UI for the auto grader hub project.
 
@@ -32,7 +32,6 @@ npm run dev
 ### Tech Stack:
 - [React](https://react.dev/)
 - [Vite](https://vitejs.dev/)
-- [Material-UI](https://material-ui.com/)
 - [Antd](https://ant.design/)
 - [Tailwind CSS](https://tailwindcss.com/)
 - [React Query](https://react-query.tanstack.com/)
@@ -43,15 +42,14 @@ npm run dev
 ## Template Structure:
 - `src`: Contains the source code of the frontend
     - `apis`: Contains the API services and configurations
-    - `assets`: Contains the static assets (images, fonts, etc.)
     - `components`: Contains the reusable components
-    - `data`: Contains the data such as constants, enums, etc.
+    - `constants`: Contains the constant values and types
     - `hooks`: Contains the custom hooks
     - `layouts`: Contains the layout components
     - `pages`: Contains the page components. Each page is a route in the application
-    - `provider`: Contains some providers such as ThemeProvider, QueryClientProvider, etc.
+    - `providers`: Contains some providers such as ThemeProvider, QueryClientProvider, etc.
     - `routes`: Contains the route configurations
-    - `theme`: Contains the theme configurations
+    - `themes`: Contains the theme configurations
     - `utils`: Contains the utility functions
     - `App.tsx`: The root component of the application
     - `index.tsx`: The entry point of the application
@@ -78,25 +76,18 @@ export default PageName;
 ### 2. Export lazy-loaded page
 To export the lazy-loaded page, you can export the page in the `pages/index.ts` file. The content of the file should be like this:
 ```tsx
-import { lazy } from 'react';
-
-const PageNamePage = lazy(() => import('./PageName'));
-
-export {
-    PageNamePage,
-};
+export {default as HomePage} from "@/pages/home";
 ```
 
 ### 3. Add route for the page
-To add a route for the page, you can add the route in the `routes/appRoute.ts` file. The content of the file should be like this:
+To add a route for the page, you can add the route in the `routes` folder. Private routes should be added in the `privateRoutes.ts` file and public routes should be added in the `publicRoutes.ts` file. The content of the file should be like this:
 ```tsx
-import { PageNamePage } from '../pages';
+import { PageNamePage } from '@/pages';
 
 export const appRoutes = [
     pathValue: {
         path: "/page-name",
         component: PageNamePage,
-        requiredLogin: true,
     },
 ];
 
@@ -130,7 +121,6 @@ import { LayoutName } from '../layouts';
 
 const routes = [
     {
-        path: "/global-path",
         element: <LayoutName />,
         children: [
             ...Object.values(appRoute).filter((path) => path.path.startsWith("/global-path")).map(({path, component: Component}) => (
@@ -144,8 +134,6 @@ const routes = [
 ]
 
 ```
-
-The `/global-path` is the path of the layout, for example: `/admin`, `/teacher`, `/student`, etc.
 
 ## NOTE:
 
