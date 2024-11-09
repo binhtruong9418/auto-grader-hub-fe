@@ -4,13 +4,12 @@ import AppRoutes from "@/routes/index.tsx";
 
 
 function App() {
-	
 	return (
-			<QueryProvider>
-				<UpdateProvider>
-					<AppRoutes/>
-				</UpdateProvider>
-			</QueryProvider>
+		<QueryProvider>
+			<UpdateProvider>
+				<AppRoutes />
+			</UpdateProvider>
+		</QueryProvider>
 	)
 }
 
