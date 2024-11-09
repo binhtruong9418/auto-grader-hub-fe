@@ -1,10 +1,15 @@
 import { HomePage } from '@/pages';
+import { ProblemListPage } from '@/pages';
 
-const publicRoutes = {
+const privateRoutes = {
 	home: {
 		path: '/',
 		component: HomePage,
+	},
+	problems:{
+		path:'/problems',
+		component: ProblemListPage,
 	}
 }
 
-export default publicRoutes;
+export default privateRoutes;

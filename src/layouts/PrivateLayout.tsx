@@ -32,7 +32,7 @@ function getItem(
 const itemRoute = {
 	"1": "/",
 	"2": "/category",
-	"3.1": "/courses",
+	"3.1": "/problems",
 	"3.2": "/courses/add",
 	"4": "/users",
 }
