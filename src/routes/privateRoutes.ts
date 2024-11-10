@@ -1,5 +1,4 @@
-import { HomePage } from '@/pages';
-import { ProblemListPage } from '@/pages';
+import { HomePage, ProblemListPage, ProblemDetailsPage } from '@/pages';
 
 const privateRoutes = {
 	home: {
@@ -9,7 +8,11 @@ const privateRoutes = {
 	problems:{
 		path:'/problems',
 		component: ProblemListPage,
-	}
+	},
+	problemDetails: {
+		path: '/problems/:problemId',
+		component: ProblemDetailsPage,
+	},
 }
 
 export default privateRoutes;

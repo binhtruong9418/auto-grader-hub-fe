@@ -189,10 +189,12 @@ const PrivateLayout = () => {
 				<Content
 					style={{
 						marginLeft: 22,
+						
 					}}>
 					<div style={{
 						paddingTop: 16,
 						paddingRight: 24,
+						paddingLeft:5,
 					}}>
 						<Outlet/>
 					</div>

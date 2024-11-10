@@ -1,14 +1,29 @@
 import "./index.css";
 import {Button, Form, Input, Image} from "antd";
 import {useTranslation} from "react-i18next";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import toast from "react-hot-toast";
+import userService from "@/apis/service/userService";
+import { AxiosError } from 'axios';
 
 const ForgotPassword = () => {
 	const [form] = Form.useForm();
 	const {t} = useTranslation()
+	const navigate = useNavigate()
 	const handleForgotPassword = async (values: {email: string, password: string}) => {
-		console.log(values)
-		// add your code here
+		// ForgotPassword.tsx
+
+		const handleForgotPassword = async (values: { email: string }) => {
+			try {
+				await userService.forgotPassword(values.email);
+				toast.success(t('Password reset email sent!'));
+				navigate('/login');
+			} catch (error) {
+				const errorMessage = (error as AxiosError<{ message: string }>)?.response?.data?.message || t('Failed to send password reset email!');
+				toast.error(errorMessage);	
+			}
+		};
+
 	}
 	return (
 		<main className="auth-page">

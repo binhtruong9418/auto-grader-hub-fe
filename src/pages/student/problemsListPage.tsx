@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { Table, Tag, Button, Select, Input, Space } from 'antd';
+import React, { useState, useEffect, Key } from 'react';
+import { Table, Tag, Select, Input, Space } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { SearchOutlined } from '@ant-design/icons';
-import { Key } from 'react';
+
 
 const { Option } = Select;
 
@@ -19,12 +19,12 @@ const ProblemListPage = () => {
     const [problems, setProblems] = useState<Problem[]>([]);
     const [difficultyFilter, setDifficultyFilter] = useState<string | null>(null);
     const [searchTerm, setSearchTerm] = useState('');
-    
+
     useEffect(() => {
         setLoading(true);
-        fetchProblems(); // Call API to fetch problem list
+        fetchProblems();
     }, [difficultyFilter, searchTerm]);
-    
+
     const fetchProblems = async () => {
         try {
             // Replace with API call to fetch problems
@@ -76,7 +76,7 @@ const ProblemListPage = () => {
     ];
 
     return (
-        <div className="container mt-5">
+        <div style={{ padding: '16px', background: '#fff', minHeight: '100vh' }}>
             <Space style={{ marginBottom: 16 }}>
                 <Select
                     placeholder="Filter by Difficulty"
@@ -106,6 +106,8 @@ const ProblemListPage = () => {
                     total: problems.length,
                     showSizeChanger: true,
                 }}
+                style={{ width: '100%' }}
+                scroll={{ x: '100%' }}
             />
         </div>
     );

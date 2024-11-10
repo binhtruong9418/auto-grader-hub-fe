@@ -5,28 +5,34 @@ import {Link, useNavigate} from "react-router-dom";
 import toast from "react-hot-toast";
 import {isEmail} from "@/utils";
 import {JWT_LOCAL_STORAGE_KEY} from "@/constants/data.ts";
+import userService from "@/apis/service/userService";
+import { AxiosError } from 'axios';
 
 const Login = () => {
 	const [form] = Form.useForm();
 	const {t} = useTranslation()
 	const navigate = useNavigate()
 	const handleLogin = async (values: {email: string, password: string}) => {
-		const {email} = values
-		// add your code here
-		if(!isEmail(email)) {
+		const { email, password } = values;
+		if (!isEmail(email)) {
 			form.setFields([
 				{
 					name: 'email',
 					errors: [t('The input is not valid E-mail!')],
 				}
-			])
+			]);
+			return;
 		}
-		
-		localStorage.setItem(JWT_LOCAL_STORAGE_KEY, 'token')
-		
-		toast.success(t('Login successfully!'))
-		
-		navigate('/')
+
+		try {
+			const response = await userService.login(email, password);
+			localStorage.setItem(JWT_LOCAL_STORAGE_KEY, response.token);
+			toast.success(t('Login successfully!'));
+			navigate('/');
+		} catch (error) {
+			const errorMessage = (error as AxiosError<{ message: string }>)?.response?.data?.message || t('Login failed!');
+			toast.error(errorMessage);		
+		}
 	}
 	return (
 		<main className="auth-page">

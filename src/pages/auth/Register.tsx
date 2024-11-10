@@ -1,14 +1,30 @@
 import "./index.css";
 import {Button, Form, Input, Image} from "antd";
 import {useTranslation} from "react-i18next";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import toast from "react-hot-toast";
+import userService from "@/apis/service/userService";
+import { AxiosError } from 'axios';
 
 const Register = () => {
 	const [form] = Form.useForm();
 	const {t} = useTranslation()
-	const handleRegister = async (values: {email: string, password: string}) => {
-		console.log(values)
-		// add your code here
+	const navigate = useNavigate()
+	const handleRegister = async (values: { email: string, password: string, confirmPassword: string }) => {
+		const { email, password, confirmPassword } = values;
+		if (password !== confirmPassword) {
+			form.setFields([{ name: 'confirmPassword', errors: [t('Passwords do not match!')] }]);
+			return;
+		}
+	
+		try {
+			await userService.register(email, password);
+			toast.success(t('Registration successful!'));
+			navigate('/login');
+		} catch (error) {
+			const errorMessage = (error as AxiosError<{ message: string }>)?.response?.data?.message || t('Registration failed!');
+			toast.error(errorMessage);	
+		}
 	}
 	return (
 		<main className="auth-page">
