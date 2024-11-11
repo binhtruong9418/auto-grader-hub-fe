@@ -10,21 +10,18 @@ const ForgotPassword = () => {
 	const [form] = Form.useForm();
 	const {t} = useTranslation()
 	const navigate = useNavigate()
-	const handleForgotPassword = async (values: {email: string, password: string}) => {
-		// ForgotPassword.tsx
+	const handleForgotPassword = async (values: { email: string }) => {
+		try {
+			await userService.forgotPassword(values.email);
+			toast.success(t('Password reset email sent!'));
+			navigate('/login');
+		} catch (error) {
+			const errorMessage = (error as AxiosError<{ message: string }>)?.response?.data?.message || t('Failed to send password reset email!');
+			toast.error(errorMessage);	
+		}
+	};
 
-		const handleForgotPassword = async (values: { email: string }) => {
-			try {
-				await userService.forgotPassword(values.email);
-				toast.success(t('Password reset email sent!'));
-				navigate('/login');
-			} catch (error) {
-				const errorMessage = (error as AxiosError<{ message: string }>)?.response?.data?.message || t('Failed to send password reset email!');
-				toast.error(errorMessage);	
-			}
-		};
-
-	}
+	
 	return (
 		<main className="auth-page">
 			<div className="auth-card">

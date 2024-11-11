@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Button, Card, Row, Col, Alert, Tab, Nav, Table } from 'react-bootstrap';
-import { Input, Select, Upload } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import { Input, Select, } from 'antd';
+// import {Upload}from 'antd';
+// import { UploadOutlined } from '@ant-design/icons';
 import { useParams } from 'react-router-dom';
 
 const { Option } = Select;
@@ -18,7 +19,7 @@ const ProblemDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
   const [language, setLanguage] = useState<string>('javascript');
   const [code, setCode] = useState<string>('');
-  const [file, setFile] = useState<File | null>(null);
+  // const [file, setFile] = useState<File | null>(null);
   const [submissionHistory, setSubmissionHistory] = useState<any[]>([]);
 
   // Placeholder data
@@ -35,11 +36,11 @@ const ProblemDetailsPage = () => {
     setSubmissionHistory([...submissionHistory, submission]);
   };
 
-  const columns = [
-    { title: 'Submission ID', dataIndex: 'id', key: 'id' },
-    { title: 'Status', dataIndex: 'status', key: 'status' },
-    { title: 'Time', dataIndex: 'time', key: 'time' },
-  ];
+  // const columns = [
+  //   { title: 'Submission ID', dataIndex: 'id', key: 'id' },
+  //   { title: 'Status', dataIndex: 'status', key: 'status' },
+  //   { title: 'Time', dataIndex: 'time', key: 'time' },
+  // ];
 
   return (
     <Card className="mb-4 shadow-lg">
@@ -99,20 +100,20 @@ const ProblemDetailsPage = () => {
                     rows={10}
                     placeholder="Write your code here..."
                     value={code}
-                    onChange={(e) => setCode(e.target.value)} // Corrected event handler
+                    onChange={(e) => setCode(e.target.value)}
                     className="w-100"
                   />
                 </Tab.Pane>
-                <Tab.Pane eventKey="fileUpload">
+                {/* <Tab.Pane eventKey="fileUpload">
                   <Upload 
-                    beforeUpload={(file) => { setFile(file); return false; }} // Corrected beforeUpload handling
+                    beforeUpload={(file) => { setFile(file); return false; }}
                     className="w-100"
                   >
                     <Button variant="outline-secondary" className="w-100">
                       <UploadOutlined /> Choose File
                     </Button>
                   </Upload>
-                </Tab.Pane>
+                </Tab.Pane> */}
               </Tab.Content>
             </Col>
           </Row>
