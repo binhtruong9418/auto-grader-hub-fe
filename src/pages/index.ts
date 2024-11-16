@@ -5,3 +5,4 @@ export {default as RegisterPage} from "@/pages/auth/Register.tsx";
 export {default as ForgotPasswordPage} from "@/pages/auth/ForgotPassword.tsx";
 export {default as ProblemListPage} from "@/pages/student/problemsListPage.tsx";
 export {default as ProblemDetailsPage} from "@/pages/student/problemDetailsPage.tsx";
+export {default as ProfilePage} from "@/pages/auth/ProfilePage.tsx";
