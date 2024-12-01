@@ -6,7 +6,6 @@ import toast from "react-hot-toast";
 import {isEmail} from "@/utils";
 import {JWT_LOCAL_STORAGE_KEY} from "@/constants/data.ts";
 import userService from "@/apis/service/userService";
-import { AxiosError } from 'axios';
 
 const Login = () => {
 	const [form] = Form.useForm();
@@ -26,12 +25,11 @@ const Login = () => {
 
 		try {
 			const response = await userService.login(email, password);
-			localStorage.setItem(JWT_LOCAL_STORAGE_KEY, response.token);
+			localStorage.setItem(JWT_LOCAL_STORAGE_KEY, response.jwt);
 			toast.success(t('Login successfully!'));
 			navigate('/');
-		} catch (error) {
-			const errorMessage = (error as AxiosError<{ message: string }>)?.response?.data?.message || t('Login failed!');
-			toast.error(errorMessage);		
+		} catch (error: any) {
+			toast.error(error?.message || t('Login failed!'));
 		}
 	}
 	return (
