@@ -6,3 +6,4 @@ export {default as ForgotPasswordPage} from "@/pages/auth/ForgotPassword.tsx";
 export {default as ProblemListPage} from "@/pages/list-user-problem";
 export {default as ProblemDetailsPage} from "@/pages/user-problem";
 export {default as ProfilePage} from "@/pages/auth/ProfilePage.tsx";
+export {default as CreateProblemPage} from "@/pages/admin/CreateProblemPage";
