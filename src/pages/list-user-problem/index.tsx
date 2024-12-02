@@ -1,6 +1,6 @@
 import {useState, Key, useMemo} from 'react';
 import {Table, Tag, Select, Input, Space} from 'antd';
-import {useNavigate} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import { SearchOutlined } from '@ant-design/icons';
 import {useQuery} from "@tanstack/react-query";
 import userProblemService from "@/apis/service/userProblemService.ts";
@@ -15,8 +15,9 @@ interface Problem {
 	status: string;
 }
 
-const ProblemListPage = () => {
+const UserProblemListPage = () => {
 	const navigate = useNavigate();
+	const {contestId} = useParams()
 	const [difficultyFilter, setDifficultyFilter] = useState<string | null>(null);
 	const [searchTerm, setSearchTerm] = useState('');
 	const [searchParams, setSearchParams] = useState({
@@ -31,12 +32,14 @@ const ProblemListPage = () => {
 		},
 		isLoading: listUserProblemLoading,
 	} = useQuery({
-		queryKey: ['listUserProblem', searchParams, difficultyFilter],
+		queryKey: ['listUserProblem', contestId, searchParams, difficultyFilter],
 		queryFn: async ({queryKey}: any) => {
-			const [, pageParams] = queryKey;
+			const [,contestId, pageParams] = queryKey;
+			if(!contestId) return null;
 			return await userProblemService.getAll({
 				page: pageParams.page,
 				limit: pageParams.limit,
+				contestId: contestId,
 			});
 		},
 	})
@@ -60,6 +63,11 @@ const ProblemListPage = () => {
 			title: 'Title',
 			dataIndex: 'name',
 			key: 'name',
+			render: (text: string, record: Problem) => (
+				<div className="cursor-pointer hover:text-blue-500" onClick={() => navigate(`/my-problems-detail/${record.id}`)}>
+					{text}
+				</div>
+			),
 		},
 		{
 			title: 'Code',
@@ -126,13 +134,6 @@ const ProblemListPage = () => {
 				dataSource={listProblemTableData}
 				loading={listUserProblemLoading}
 				rowKey="id"
-				onRow={(record: any) => {
-					return {
-						onClick: () => {
-							navigate(`/problems/${record.id}`);
-						},
-					};
-				}}
 				pagination={{
 					current: searchParams.page + 1,
 					total: totalElements,
@@ -151,4 +152,4 @@ const ProblemListPage = () => {
 	);
 };
 
-export default ProblemListPage;
+export default UserProblemListPage;

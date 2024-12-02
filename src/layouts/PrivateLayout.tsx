@@ -31,9 +31,8 @@ function getItem(
 
 const itemRoute = {
 	"1": "/",
-	"2": "/category",
-	"3.1": "/problems",
-	"3.2": "/courses/add",
+	"2.1": "/my-contests",
+	"2.2": "/contests",
 	"4": "/users",
 }
 
@@ -59,9 +58,9 @@ const PrivateLayout = () => {
 	
 	const items: MenuItem[] = [
 		getItem("Home", "1", <IoMdHome/>),
-		getItem("Coding", "3", <FaCode />, [
-			getItem("My Contests", "3.1", <GrPersonalComputer />),
-			getItem("All Contests", "3.2", <CiViewList />),
+		getItem("Coding", "2", <FaCode />, [
+			getItem("My Contests", "2.1", <GrPersonalComputer />),
+			getItem("All Contests", "2.2", <CiViewList />),
 		]),
 		getItem("Menu 3", "4", <FaRegUser/>)
 	];

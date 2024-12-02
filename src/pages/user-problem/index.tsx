@@ -11,7 +11,7 @@ import submissionService from "@/apis/service/submissionService.ts";
 const {Title, Text} = Typography;
 const {TabPane} = Tabs;
 
-const ProblemDetail = () => {
+const UserProblemDetail = () => {
 	const {problemId} = useParams();
 	const [code, setCode] = useState('// Write your code here');
 	const [language, setLanguage] = useState('cpp');
@@ -213,4 +213,4 @@ const ProblemDetail = () => {
 	);
 };
 
-export default ProblemDetail;
+export default UserProblemDetail;
