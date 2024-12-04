@@ -78,16 +78,13 @@ const AppHeader = ({setCollapsed, collapsed}: { setCollapsed: (value: boolean) =
 					)}
 					placement={"bottomRight"}
 				>
-					<div className="user-info">
-						<div>ADMIN</div>
-					</div>
 					<div className="avatar">
 						<Image
 							src={'/logo.jpg'}
 							width={48}
 							height={48}
 							preview={false}
-							className={'flex items-center justify-center'}
+							className={'flex items-center justify-center rounded-full'}
 						/>
 					</div>
 				</Popover>

@@ -1,4 +1,4 @@
-import {ContestStatus} from "@/constants/types.ts";
+import {ContestStatus, SubmissionStatus} from "@/constants/types.ts";
 
 export const handleEnterKeyPress = (e: React.KeyboardEvent<HTMLInputElement>, callback: () => void, isDisabled: boolean) => {
 	if (e.key === 'Enter' && !isDisabled) {
@@ -10,6 +10,17 @@ export const getContestStatusColor = (status: string) => {
 	const colors = {
 		[ContestStatus.RUNNING]: 'success',
 		[ContestStatus.COMPLETED]: 'danger',
+	};
+	return colors[status as keyof typeof colors];
+}
+
+export const getSubmissionStatusTagColor = (status: string) => {
+	const colors = {
+		[SubmissionStatus.ACCEPTED]: 'success',
+		[SubmissionStatus.COMPILATION_ERROR]: 'warning',
+		[SubmissionStatus.PENDING]: 'processing',
+		[SubmissionStatus.PARTIAL]: 'warning',
+		[SubmissionStatus.FAILED]: 'error',
 	};
 	return colors[status as keyof typeof colors];
 }
