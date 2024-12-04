@@ -8,13 +8,6 @@ import userProblemService from "@/apis/service/userProblemService.ts";
 
 const { Option } = Select;
 
-interface Problem {
-	id: number;
-	title: string;
-	difficulty: string;
-	status: string;
-}
-
 const UserProblemListPage = () => {
 	const navigate = useNavigate();
 	const {contestId} = useParams()
@@ -64,7 +57,7 @@ const UserProblemListPage = () => {
 			title: 'Title',
 			dataIndex: 'name',
 			key: 'name',
-			render: (text: string, record: Problem) => (
+			render: (text: string, record: any) => (
 				<div className="cursor-pointer hover:text-blue-500" onClick={() => navigate(`/my-problems-detail/${record.problemId}`)}>
 					{text}
 				</div>
@@ -84,7 +77,7 @@ const UserProblemListPage = () => {
 				{ text: 'Medium', value: 'Medium' },
 				{ text: 'Hard', value: 'Hard' },
 			],
-			onFilter: (value: string | Key | boolean, record: Problem) => record.difficulty === value,
+			onFilter: (value: string | Key | boolean, record: any) => record.difficulty === value,
 			render: (difficulty: string) => {
 				const color = difficulty === 'Easy' ? 'green' : difficulty === 'Medium' ? 'orange' : 'red';
 				return <Tag color={color}>{difficulty}</Tag>;

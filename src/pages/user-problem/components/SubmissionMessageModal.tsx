@@ -18,8 +18,8 @@ const SubmissionMessageModal = (props: SubmissionMessageModalProps) => {
 		const text = props.error || props.message || '';
 		const numberOfLines = (text.match(/\n/g) || []).length + 1;
 		const newHeight = numberOfLines * lineHeight;
-		if (newHeight > 300) {
-			setEditorHeight('200px');
+		if (newHeight > 500) {
+			setEditorHeight('500px');
 		} else {
 			setEditorHeight(`${newHeight}px`);
 		}
@@ -31,6 +31,7 @@ const SubmissionMessageModal = (props: SubmissionMessageModalProps) => {
 			open={props.open}
 			onCancel={props.onClose}
 			footer={null}
+			width={1000}
 		>
 			<AceEditor
 				mode={'text'}

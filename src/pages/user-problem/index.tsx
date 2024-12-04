@@ -85,6 +85,7 @@ const UserProblemDetail = () => {
 	const submissionTableData = useMemo(() => {
 		if (!submissions) return [];
 		return submissions.map((submission: any) => ({
+			...submission,
 			key: submission.submissionHash,
 			id: submission.submissionHash,
 			timestamp: moment(submission.submissionDate).format('YYYY-MM-DD HH:mm:ss'),
