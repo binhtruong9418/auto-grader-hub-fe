@@ -11,6 +11,10 @@ const submissionService = {
 		sourceCode: string;
 	}): Promise<any> => {
 		return await axiosClient.post("/api/submissions", data);
+	},
+	
+	getByHash: async (hash: string): Promise<any> => {
+		return await axiosClient.get(`/api/submissions/get-by-hash/${hash}`);
 	}
 }
 

@@ -2,7 +2,7 @@ import {
 	HomePage,
 	ProfilePage,
 	CreateProblemPage,
-	UserContestListPage, ContestListPage, UserProblemListPage, UserProblemDetailsPage
+	UserContestListPage, ContestListPage, UserProblemListPage, UserProblemDetailsPage, SubmissionDetailPage
 } from '@/pages';
 
 const privateRoutes = {
@@ -18,13 +18,17 @@ const privateRoutes = {
 		path: '/contests',
 		component: ContestListPage,
 	},
-	problems:{
-		path:'/my-problems/:contestId',
+	problems: {
+		path: '/my-problems/:contestId',
 		component: UserProblemListPage,
 	},
 	problemDetails: {
 		path: '/my-problems-detail/:problemId',
 		component: UserProblemDetailsPage,
+	},
+	submissionDetail: {
+		path: '/submission-detail/:id',
+		component: SubmissionDetailPage,
 	},
 	profile: {
 		path: '/profile',

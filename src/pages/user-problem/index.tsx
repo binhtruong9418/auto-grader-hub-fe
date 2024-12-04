@@ -2,7 +2,7 @@ import {useEffect, useMemo, useState} from 'react';
 import {Typography, Card, Table, Upload, Button, Tabs, Select, Flex, Tag, Input} from 'antd';
 import {UploadOutlined} from '@ant-design/icons';
 import CodeEditor from "@/pages/user-problem/components/CodeEditor.tsx";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useQuery} from "@tanstack/react-query";
 import userProblemService from "@/apis/service/userProblemService.ts";
 import submissionService from "@/apis/service/submissionService.ts";
@@ -19,6 +19,7 @@ const {TabPane} = Tabs;
 
 const UserProblemDetail = () => {
 	const {problemId} = useParams<{ problemId: string }>();
+	const navigate = useNavigate();
 	const [code, setCode] = useState('// Write your code here');
 	const [language, setLanguage] = useState('c_cpp');
 	const [isSubmitting, setIsSubmitting] = useState(false);
@@ -118,7 +119,10 @@ const UserProblemDetail = () => {
 			render: (id: string) => {
 				const shortId = id.slice(0, 6);
 				return (
-					<Text>{shortId}</Text>
+					<div className="cursor-pointer hover:text-blue-500"
+					     onClick={() => navigate(`/submission-detail/${id}`)}>
+						{shortId}
+					</div>
 				);
 			}
 		},

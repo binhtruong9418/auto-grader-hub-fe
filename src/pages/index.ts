@@ -9,3 +9,4 @@ export {default as ProfilePage} from "@/pages/auth/ProfilePage.tsx";
 export {default as CreateProblemPage} from "@/pages/admin/CreateProblemPage";
 export {default as UserContestListPage} from "@/pages/list-user-contest";
 export {default as ContestListPage} from "@/pages/list-contest";
+export {default as SubmissionDetailPage} from "@/pages/submission-detail";

@@ -74,7 +74,7 @@ export default PageName;
 ```
 
 ### 2. Export page
-To export the lazy-loaded page, you can export the page in the `pages/index.ts` file. The content of the file should be like this:
+To export the lazy-loaded page, you can export the page in the `pages/index.tsx` file. The content of the file should be like this:
 ```tsx
 export {default as HomePage} from "@/pages/home";
 ```

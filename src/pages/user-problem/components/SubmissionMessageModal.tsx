@@ -1,8 +1,5 @@
-import { Modal } from "antd"
-import AceEditor from "react-ace";
-
-import "ace-builds/src-noconflict/theme-monokai";
-import {useEffect, useState} from "react";
+import {Modal} from "antd"
+import {CopyableBox} from "@/components";
 
 interface SubmissionMessageModalProps {
 	open: boolean;
@@ -12,19 +9,6 @@ interface SubmissionMessageModalProps {
 }
 
 const SubmissionMessageModal = (props: SubmissionMessageModalProps) => {
-	const [editorHeight, setEditorHeight] = useState('auto');
-	useEffect(() => {
-		const lineHeight = 20;
-		const text = props.error || props.message || '';
-		const numberOfLines = (text.match(/\n/g) || []).length + 1;
-		const newHeight = numberOfLines * lineHeight;
-		if (newHeight > 500) {
-			setEditorHeight('500px');
-		} else {
-			setEditorHeight(`${newHeight}px`);
-		}
-	}, [props.error, props.message]);
-	
 	return (
 		<Modal
 			title="Submission message"
@@ -33,22 +17,13 @@ const SubmissionMessageModal = (props: SubmissionMessageModalProps) => {
 			footer={null}
 			width={1000}
 		>
-			<AceEditor
-				mode={'text'}
-				theme="monokai"
-				value={props.error || props.message}
-				fontSize={14}
-				showPrintMargin={true}
-				showGutter={true}
-				highlightActiveLine={true}
-				readOnly={true}
-				setOptions={{
-					showLineNumbers: true,
-					tabSize: 2,
-				}}
-				editorProps={{$blockScrolling: false}}
-				style={{width: '100%', height: editorHeight}}
-				{...props}
+			<CopyableBox
+				text={
+					props?.error || props?.message || ''
+				}
+				displayText={
+					props?.error || props?.message || ''
+				}
 			/>
 		</Modal>
 	)
