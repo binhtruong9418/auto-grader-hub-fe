@@ -67,6 +67,7 @@ const UserContestList = () => {
 			status: contest?.contest?.status,
 			key: contest.id,
 			id: contest.id,
+			contestId: contest.contestId,
 		}))
 	}, [publicContests]);
 	
@@ -81,6 +82,7 @@ const UserContestList = () => {
 			status: contest?.contest?.status,
 			key: contest.id,
 			id: contest.id,
+			contestId: contest.contestId,
 		}))
 	}, [registeredContests]);
 	
@@ -90,7 +92,7 @@ const UserContestList = () => {
 			dataIndex: 'title',
 			key: 'title',
 			render: (text: string, record: any) => (
-				<div className="cursor-pointer hover:text-blue-500" onClick={() => navigate(`/my-problems/${record.id}`)}>
+				<div className="cursor-pointer hover:text-blue-500" onClick={() => navigate(`/my-problems/${record.contestId}`)}>
 					{text}
 				</div>
 			),
