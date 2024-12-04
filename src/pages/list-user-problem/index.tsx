@@ -55,6 +55,7 @@ const UserProblemListPage = () => {
 			code: problem.problem.problemCode,
 			point: problem.maxSubmittedPoint,
 			tags: problem.problem.tags,
+			problemId: problem.problemId
 		}));
 	} , [listUserProblems]);
 	
@@ -64,7 +65,7 @@ const UserProblemListPage = () => {
 			dataIndex: 'name',
 			key: 'name',
 			render: (text: string, record: Problem) => (
-				<div className="cursor-pointer hover:text-blue-500" onClick={() => navigate(`/my-problems-detail/${record.id}`)}>
+				<div className="cursor-pointer hover:text-blue-500" onClick={() => navigate(`/my-problems-detail/${record.problemId}`)}>
 					{text}
 				</div>
 			),
