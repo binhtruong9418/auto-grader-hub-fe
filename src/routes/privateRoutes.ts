@@ -1,7 +1,6 @@
 import {
 	HomePage,
 	ProfilePage,
-	CreateProblemPage,
 	UserContestListPage, ContestListPage, UserProblemListPage, UserProblemDetailsPage, SubmissionDetailPage
 } from '@/pages';
 
@@ -33,10 +32,6 @@ const privateRoutes = {
 	profile: {
 		path: '/profile',
 		component: ProfilePage,
-	},
-	admin: {
-		path: '/admin',
-		component: CreateProblemPage,
 	},
 }
 

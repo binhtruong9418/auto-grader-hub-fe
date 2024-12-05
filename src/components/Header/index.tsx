@@ -16,6 +16,7 @@ const AppHeader = ({setCollapsed, collapsed}: { setCollapsed: (value: boolean) =
 	const handleLogout = () => {
 		try {
 			localStorage.removeItem(JWT_LOCAL_STORAGE_KEY);
+			localStorage.removeItem('userInfo');
 			navigate("/login");
 		} catch (err) {
 			console.log(err);

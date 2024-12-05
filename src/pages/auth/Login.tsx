@@ -26,6 +26,8 @@ const Login = () => {
 		try {
 			const response = await userService.login(email, password);
 			localStorage.setItem(JWT_LOCAL_STORAGE_KEY, response.jwt);
+			const userInfo = response.user
+			localStorage.setItem('userInfo', JSON.stringify(userInfo));
 			toast.success(t('Login successfully!'));
 			navigate('/');
 		} catch (error: any) {

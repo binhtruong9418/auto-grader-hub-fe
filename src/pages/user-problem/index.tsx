@@ -61,6 +61,7 @@ const UserProblemDetail = () => {
 			return await submissionService.getAll({
 				page: pageParams.page,
 				limit: pageParams.limit,
+				problemId: _problemId,
 			});
 		},
 		enabled: !!problemId
@@ -103,11 +104,21 @@ const UserProblemDetail = () => {
 			title: 'Input',
 			dataIndex: 'input',
 			key: 'input',
+			render: (input: string) => {
+				return (
+					<div className="whitespace-pre-wrap max-w-2xl">{input}</div>
+				);
+			}
 		},
 		{
 			title: 'Expected Output',
 			dataIndex: 'expectedOutput',
 			key: 'expectedOutput',
+			render: (expectedOutput: string) => {
+				return (
+					<div className="whitespace-pre-wrap max-w-2xl">{expectedOutput}</div>
+				);
+			}
 		},
 	];
 	
@@ -228,7 +239,7 @@ const UserProblemDetail = () => {
 			return toast.error('Invalid file type');
 		}
 		
-		if(info.file.name.split('.').pop() !== allowFileExtension) {
+		if (info.file.name.split('.').pop() !== allowFileExtension) {
 			return toast.error('Invalid file type');
 		}
 		const file = info.file;
@@ -251,9 +262,13 @@ const UserProblemDetail = () => {
 				<Title level={2}>{
 					problemData ? problemData?.problem?.problemName : 'Problem Title'
 				}</Title>
-				<Text className="block mb-4">
-					{problemData ? problemData?.problem?.problemStatement : 'Problem Description'}
-				</Text>
+				<div className="block mb-4"
+				     dangerouslySetInnerHTML={{
+					     __html: problemData ?
+						     problemData?.problem?.problemStatement :
+						     'Problem Description'
+				     }}
+				/>
 			</Card>
 			
 			{/* Test Cases */}

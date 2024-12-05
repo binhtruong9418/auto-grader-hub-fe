@@ -7,9 +7,10 @@ import {Header as AppHeader} from "@/components";
 import {FaCode, FaRegUser} from "react-icons/fa";
 import {IoMdHome} from "react-icons/io";
 import {CiViewList} from "react-icons/ci";
-import {MdSkipNext, MdSkipPrevious} from "react-icons/md";
+import {MdManageAccounts, MdOutlineEmojiEvents, MdSkipNext, MdSkipPrevious} from "react-icons/md";
 import useWindowSize from "@/hooks/useWindowSize.ts";
 import {GrPersonalComputer} from "react-icons/gr";
+import {FaLaptopCode} from "react-icons/fa6";
 
 const {Header, Content, Sider} = Layout;
 
@@ -33,7 +34,11 @@ const itemRoute = {
 	"1": "/",
 	"2.1": "/my-contests",
 	"2.2": "/contests",
-	"4": "/users",
+	"3.1": "/users",
+	"3.2.1": "/admin/problem/create",
+	"3.2.2": "/admin/problems",
+	"3.3.1": "/admin/contest/create",
+	"3.3.2": "/admin/contests",
 }
 
 const PrivateLayout = () => {
@@ -56,14 +61,40 @@ const PrivateLayout = () => {
 		}
 	}, [isTablet]);
 	
-	const items: MenuItem[] = [
-		getItem("Home", "1", <IoMdHome/>),
-		getItem("Coding", "2", <FaCode />, [
-			getItem("My Contests", "2.1", <GrPersonalComputer />),
-			getItem("All Contests", "2.2", <CiViewList />),
-		]),
-		getItem("Menu 3", "4", <FaRegUser/>)
-	];
+	const userInfoData = localStorage.getItem('userInfo');
+	
+	const items: MenuItem[] = useMemo(() => {
+		const userInfoData = localStorage.getItem('userInfo');
+		const userInfo = userInfoData ? JSON.parse(userInfoData) : null;
+		if (userInfo && userInfo.role === 'admin') {
+			return [
+				getItem("Home", "1", <IoMdHome/>),
+				getItem("Coding", "2", <FaCode />, [
+					getItem("My Contests", "2.1", <GrPersonalComputer />),
+					getItem("All Contests", "2.2", <CiViewList />),
+				]),
+				getItem("Admin", "3", <MdManageAccounts />, [
+					getItem("Users", "3.1", <FaRegUser/>),
+					getItem("Problems", "3.2", <FaLaptopCode />, [
+						getItem("Create Problem", "3.2.1"),
+						getItem("All Problems", "3.2.2"),
+					]),
+					getItem("Contests", "3.3", <MdOutlineEmojiEvents />, [
+						getItem("Create Contest", "3.3.1"),
+						getItem("All Contests", "3.3.2"),
+					]),
+				])
+			];
+		} else {
+			return [
+				getItem("Home", "1", <IoMdHome/>),
+				getItem("Coding", "2", <FaCode />, [
+					getItem("My Contests", "2.1", <GrPersonalComputer />),
+					getItem("All Contests", "2.2", <CiViewList />),
+				]),
+			];
+		}
+	}, [userInfoData]);
 	
 	
 	useEffect(() => {
