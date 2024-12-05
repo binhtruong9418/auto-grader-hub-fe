@@ -6,7 +6,7 @@ import {
 	UserProblemListPage,
 	UserProblemDetailsPage,
 	SubmissionDetailPage,
-	ListProblemPage
+	ListProblemPage, ProblemDetailPage
 } from '@/pages';
 
 const privateRoutes = {
@@ -37,6 +37,10 @@ const privateRoutes = {
 	listProblem: {
 		path: '/list-problem',
 		component: ListProblemPage,
+	},
+	problemDetail: {
+		path: '/problem-detail/:id',
+		component: ProblemDetailPage,
 	},
 	profile: {
 		path: '/profile',

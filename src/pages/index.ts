@@ -11,3 +11,4 @@ export {default as ContestListPage} from "@/pages/list-contest";
 export {default as SubmissionDetailPage} from "@/pages/submission-detail";
 export {default as CreateProblemPage} from "@/pages/create-problem";
 export {default as ListProblemPage} from "@/pages/list-problem";
+export {default as ProblemDetailPage} from "@/pages/problem-detail";

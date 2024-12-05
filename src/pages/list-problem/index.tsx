@@ -1,6 +1,6 @@
 import {useMemo, useState} from 'react';
 import {Flex, Input, Select, Table, Tag, Typography} from 'antd';
-import {useNavigate} from 'react-router-dom';
+import {useNavigate, useSearchParams} from 'react-router-dom';
 import {CalendarOutlined} from '@ant-design/icons';
 import {formatObject} from "@/utils";
 import {useQuery} from "@tanstack/react-query";
@@ -12,6 +12,7 @@ const {Option} = Select
 
 const ListProblem = () => {
 	const navigate = useNavigate();
+	const [urlParams] = useSearchParams()
 	const [searchParams, setSearchParams] = useState({
 		page: 0,
 		limit: 10,
@@ -27,10 +28,13 @@ const ListProblem = () => {
 		},
 		isLoading: listProblemLoading,
 	} = useQuery({
-		queryKey: ['allProblems', searchParams],
+		queryKey: ['allProblems', searchParams, urlParams.get("contest")],
 		queryFn: async ({queryKey}: any) => {
-			const [, searchParams] = queryKey;
-			return await problemService.getAll(formatObject(searchParams));
+			const [, searchParams, contestId] = queryKey;
+			return await problemService.getAll(formatObject({
+				...searchParams,
+				contestId
+			}));
 		}
 	})
 	
@@ -61,7 +65,7 @@ const ListProblem = () => {
 			dataIndex: 'problemName',
 			key: 'problemName',
 			render: (text: string, record: any) => (
-				<div className="cursor-pointer hover:text-blue-500" onClick={() => navigate(`/problem/${record.id}`)}>
+				<div className="cursor-pointer hover:text-blue-500" onClick={() => navigate(`/problem-detail/${record.id}`)}>
 					{text}
 				</div>
 			),
@@ -98,6 +102,21 @@ const ListProblem = () => {
 				)
 			},
 		},
+		{
+			title: 'Tag',
+			key: 'tags',
+			dataIndex: 'tags',
+			render: (tags: string[]) => {
+				return (
+					<div className={'flex flex-wrap'}>
+						{tags.map((tag: string, index: number) => (
+							<Tag key={index}>{tag}</Tag>
+						))}
+					</div>
+				)
+			},
+			width: 150
+		}
 	];
 	
 	return (

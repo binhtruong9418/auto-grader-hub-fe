@@ -21,6 +21,10 @@ const problemService = {
 		return await axiosClient.get('/api/problem', {
 			params: query
 		});
+	},
+	
+	getOne: async (problemId: string): Promise<any> => {
+		return await axiosClient.get(`/api/problem/${problemId}`);
 	}
 }
 
