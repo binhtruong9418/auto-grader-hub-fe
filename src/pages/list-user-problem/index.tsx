@@ -79,7 +79,7 @@ const UserProblemListPage = () => {
 			],
 			onFilter: (value: string | Key | boolean, record: any) => record.difficulty === value,
 			render: (difficulty: string) => {
-				const color = difficulty === 'Easy' ? 'green' : difficulty === 'Medium' ? 'orange' : 'red';
+				const color = difficulty === 'easy' ? 'green' : difficulty === 'medium' ? 'orange' : 'red';
 				return <Tag color={color}>{difficulty}</Tag>;
 			},
 		},

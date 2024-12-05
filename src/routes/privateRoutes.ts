@@ -1,7 +1,12 @@
 import {
 	HomePage,
 	ProfilePage,
-	UserContestListPage, ContestListPage, UserProblemListPage, UserProblemDetailsPage, SubmissionDetailPage
+	UserContestListPage,
+	ContestListPage,
+	UserProblemListPage,
+	UserProblemDetailsPage,
+	SubmissionDetailPage,
+	ListProblemPage
 } from '@/pages';
 
 const privateRoutes = {
@@ -28,6 +33,10 @@ const privateRoutes = {
 	submissionDetail: {
 		path: '/submission-detail/:id',
 		component: SubmissionDetailPage,
+	},
+	listProblem: {
+		path: '/list-problem',
+		component: ListProblemPage,
 	},
 	profile: {
 		path: '/profile',

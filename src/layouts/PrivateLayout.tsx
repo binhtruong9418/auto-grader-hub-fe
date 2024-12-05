@@ -34,11 +34,10 @@ const itemRoute = {
 	"1": "/",
 	"2.1": "/my-contests",
 	"2.2": "/contests",
+	"2.3": "/list-problem",
 	"3.1": "/users",
-	"3.2.1": "/admin/problem/create",
-	"3.2.2": "/admin/problems",
-	"3.3.1": "/admin/contest/create",
-	"3.3.2": "/admin/contests",
+	"3.2": "/admin/problem/create",
+	"3.3": "/admin/contest/create",
 }
 
 const PrivateLayout = () => {
@@ -72,17 +71,12 @@ const PrivateLayout = () => {
 				getItem("Coding", "2", <FaCode />, [
 					getItem("My Contests", "2.1", <GrPersonalComputer />),
 					getItem("All Contests", "2.2", <CiViewList />),
+					getItem("List Problem", "2.3", <FaLaptopCode />),
 				]),
 				getItem("Admin", "3", <MdManageAccounts />, [
 					getItem("Users", "3.1", <FaRegUser/>),
-					getItem("Problems", "3.2", <FaLaptopCode />, [
-						getItem("Create Problem", "3.2.1"),
-						getItem("All Problems", "3.2.2"),
-					]),
-					getItem("Contests", "3.3", <MdOutlineEmojiEvents />, [
-						getItem("Create Contest", "3.3.1"),
-						getItem("All Contests", "3.3.2"),
-					]),
+					getItem("Create Problem", "3.2", <FaLaptopCode />),
+					getItem("Create Contest", "3.3", <MdOutlineEmojiEvents />),
 				])
 			];
 		} else {
@@ -91,6 +85,7 @@ const PrivateLayout = () => {
 				getItem("Coding", "2", <FaCode />, [
 					getItem("My Contests", "2.1", <GrPersonalComputer />),
 					getItem("All Contests", "2.2", <CiViewList />),
+					getItem("List Problem", "2.3", <FaLaptopCode />),
 				]),
 			];
 		}

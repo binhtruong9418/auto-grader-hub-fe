@@ -15,6 +15,12 @@ const problemService = {
 		return await axiosClient.get('/api/problem-tag', {
 			params: query
 		});
+	},
+	
+	getAll: async (query: any = {}): Promise<any> => {
+		return await axiosClient.get('/api/problem', {
+			params: query
+		});
 	}
 }
 
