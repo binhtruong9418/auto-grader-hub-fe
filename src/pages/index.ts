@@ -9,6 +9,7 @@ export {default as ProfilePage} from "@/pages/auth/ProfilePage.tsx";
 export {default as UserContestListPage} from "@/pages/list-user-contest";
 export {default as ContestListPage} from "@/pages/list-contest";
 export {default as CreateContestPage} from "@/pages/create-contest";
+export {default as JoinContestRequestsPage} from "@/pages/join-contest";
 export {default as SubmissionDetailPage} from "@/pages/submission-detail";
 export {default as CreateProblemPage} from "@/pages/create-problem";
 export {default as ListProblemPage} from "@/pages/list-problem";
