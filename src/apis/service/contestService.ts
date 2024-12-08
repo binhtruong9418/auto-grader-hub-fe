@@ -5,9 +5,26 @@ const contestService = {
 		return await axiosClient.get("/api/contest/me", {params: query});
 	},
 	
+	getOne: async (contestId: string): Promise<any> => {
+		return await axiosClient.get(`/api/contest/${contestId}`);
+	},
+	
+	getOneAdmin: async (contestId: string): Promise<any> => {
+		return await axiosClient.get(`/api/contest/admin/${contestId}`);
+	},
+	
 	getAllAdmin: async (query: any = {}): Promise<any> => {
-		return await axiosClient.get("/api/contest", {params: query});
-	}
+		return await axiosClient.get("/api/contest/admin", {params: query});
+	},
+	
+	create: async (data: any): Promise<any> => {
+		return await axiosClient.post("/api/contest", data);
+	},
+	
+	update: async (contestId: string, data: any): Promise<any> => {
+		return await axiosClient.put(`/api/contest/${contestId}`, data);
+	},
+	
 }
 
 export default contestService;

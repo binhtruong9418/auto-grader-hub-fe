@@ -1,23 +1,27 @@
 import {useMemo, useState} from 'react';
-import {Flex, Input, Select, Table, Tag, Typography} from 'antd';
-import {useNavigate, useSearchParams} from 'react-router-dom';
+import {Flex, Input, Select, Spin, Table, Tag, Typography} from 'antd';
+import {useNavigate} from 'react-router-dom';
 import {CalendarOutlined} from '@ant-design/icons';
 import {formatObject} from "@/utils";
 import {useQuery} from "@tanstack/react-query";
 import moment from "moment/moment";
 import problemService from "@/apis/service/problemService.ts";
 import debounce from "lodash/debounce";
+import {Contest} from "@/apis/type.ts";
+import contestService from "@/apis/service/contestService.ts";
+import { HiPencilAlt } from 'react-icons/hi';
+
 const {Text} = Typography
 const {Option} = Select
 
-const ListProblem = () => {
+const ListAdminProblem = () => {
 	const navigate = useNavigate();
-	const [urlParams] = useSearchParams()
 	const [searchParams, setSearchParams] = useState({
 		page: 0,
 		limit: 10,
 		problemName: "",
-		difficulty: ""
+		difficulty: "",
+		contestId: "",
 	})
 	const [searchText, setSearchText] = useState<string>("")
 	
@@ -28,13 +32,29 @@ const ListProblem = () => {
 		},
 		isLoading: listProblemLoading,
 	} = useQuery({
-		queryKey: ['allProblems', searchParams, urlParams.get("contest")],
+		queryKey: ['allAdminProblems', searchParams],
 		queryFn: async ({queryKey}: any) => {
-			const [, searchParams, contestId] = queryKey;
-			return await problemService.getAll(formatObject({
+			const [, searchParams] = queryKey;
+			return await problemService.getAllAdmin(formatObject({
 				...searchParams,
-				contestId
 			}));
+		}
+	})
+	
+	const {
+		data: contestsData = {
+			contents: [],
+		},
+		isFetching: isContestsFetching,
+	} = useQuery({
+		queryKey: ['contests', searchText],
+		queryFn: async ({queryKey}) => {
+			const [, searchText] = queryKey;
+			return await contestService.getAllAdmin({
+				page: 0,
+				limit: 100,
+				q: searchText,
+			})
 		}
 	})
 	
@@ -44,9 +64,12 @@ const ListProblem = () => {
 		if (!listProblems) return [];
 		return listProblems.map((problem: any) => ({
 			...problem,
-			createdAt: moment(problem.createdAt).format('YYYY-MM-DD')
+			createdAt: moment(problem.createdAt).format('YYYY-MM-DD'),
+			contest: problem.contest?.contestName
 		}));
 	}, [listProblems]);
+	
+	
 	
 	const debouncedSearch = useMemo(
 		() =>
@@ -59,15 +82,28 @@ const ListProblem = () => {
 		[]
 	);
 	
+	
+	const contests = useMemo(() => {
+		return contestsData.contents;
+	}, [contestsData]);
+	
+	const debouncedSearchContest = useMemo(
+		() =>
+			debounce((value: string) => {
+				setSearchText(value);
+			}, 500),
+		[]
+	);
+	
 	const columns = [
 		{
 			title: 'Problem',
 			dataIndex: 'problemName',
 			key: 'problemName',
-			render: (text: string, record: any) => (
-				<div className="cursor-pointer hover:text-blue-500" onClick={() => navigate(`/problem-detail/${record.id}`)}>
+			render: (text: string) => (
+				<Text>
 					{text}
-				</div>
+				</Text>
 			),
 		},
 		{
@@ -81,14 +117,19 @@ const ListProblem = () => {
 			),
 		},
 		{
+			title: 'Contest',
+			dataIndex: 'contest',
+			key: 'contest',
+		},
+		{
 			title: 'Created At',
 			dataIndex: 'createdAt',
 			key: 'createdAt',
 			render: (text: string) => (
 				<span>
-          <CalendarOutlined className="mr-2"/>
+					<CalendarOutlined className="mr-2"/>
 					{text}
-        </span>
+				</span>
 			),
 		},
 		{
@@ -107,9 +148,9 @@ const ListProblem = () => {
 			dataIndex: 'maxTimeCommit',
 			key: 'maxTimeCommit',
 			render: (text: any) => (
-				<Text>
+				<div>
 					{text ? text : 'Unlimited'}
-				</Text>
+				</div>
 			),
 		},
 		{
@@ -126,35 +167,68 @@ const ListProblem = () => {
 				)
 			},
 			width: 150
+		},
+		{
+			title: 'Action',
+			key: 'action',
+			render: (_: string, record: any) => (
+				<div className="cursor-pointer hover:text-blue-500" onClick={() => navigate(`/admin/problem/edit/${record.id}`)}>
+					<HiPencilAlt size={20}/>
+				</div>
+			),
 		}
 	];
 	
 	return (
 		<div className="w-full">
 			<Flex className={'mb-3'} gap={10}>
-					<Input
-							placeholder={"Search by name"}
-							className={'w-96'}
-							value={searchText}
-							onChange={(e) => {
-									setSearchText(e.target.value)
-									debouncedSearch(e.target.value)
-							}}
-					/>
+				<Input
+					placeholder={"Search by name"}
+					className={'w-96'}
+					value={searchText}
+					onChange={(e) => {
+						setSearchText(e.target.value)
+						debouncedSearch(e.target.value)
+					}}
+				/>
 				<Select
 					value={searchParams.difficulty}
 					className={'w-32'}
 					onChange={(value) => {
-						 setSearchParams({
-							 ...searchParams,
-							 difficulty: value
-						 })
+						setSearchParams({
+							...searchParams,
+							difficulty: value
+						})
 					}}
 				>
-						<Option value={""}>All</Option>
-						<Option value={'easy'}>Easy</Option>
-						<Option value={'medium'}>Medium</Option>
-						<Option value={'hard'}>Hard</Option>
+					<Option value={""}>All</Option>
+					<Option value={'easy'}>Easy</Option>
+					<Option value={'medium'}>Medium</Option>
+					<Option value={'hard'}>Hard</Option>
+				</Select>
+				<Select
+					showSearch
+					placeholder="Search contest"
+					notFoundContent={isContestsFetching ? <Spin size="small" /> : 'No contest found'}
+					onSearch={debouncedSearchContest}
+					loading={isContestsFetching}
+					defaultActiveFirstOption={false}
+					showArrow={false}
+					allowClear={true}
+					className={'w-60'}
+					value={searchParams.contestId}
+					onChange={(value) => {
+						setSearchParams({
+							...searchParams,
+							contestId: value
+						})
+					}}
+				>
+					{contests.map((contest: Contest) => (
+						<Option key={contest.id} value={contest.id}>
+							{contest?.contestName} ({contest?.isPublic ? 'Public' : 'Private'})
+						</Option>
+					))}
 				</Select>
 			</Flex>
 			<Table
@@ -177,4 +251,4 @@ const ListProblem = () => {
 	);
 };
 
-export default ListProblem;
+export default ListAdminProblem;

@@ -25,6 +25,22 @@ const problemService = {
 	
 	getOne: async (problemId: string): Promise<any> => {
 		return await axiosClient.get(`/api/problem/${problemId}`);
+	},
+	
+	getAllAdmin: async (query: any = {}): Promise<any> => {
+		return await axiosClient.get('/api/problem/admin', {
+			params: query
+		});
+	},
+	
+	getOneAdmin: async (problemId: string): Promise<any> => {
+		return await axiosClient.get(`/api/problem/admin/${problemId}`);
+	},
+	
+	updateProblem: async (problemId: string, problem: CreateProblemRequest) => {
+		return await axiosClient.put(`/api/problem/${problemId}`, {
+			...problem
+		});
 	}
 }
 

@@ -29,8 +29,14 @@ export interface CreateProblemRequest {
 	contestId: number;
 	problemStatement: string;
 	tags: string[];
-	inputs: string[];
-	outputs: string[];
+	testCases: {
+		input: string;
+		output: string;
+		hidden?: number;
+	}[];
+	cpuTimeLimit?: number;
+	memoryLimit?: number;
+	maxTimeCommit?: number;
 }
 
 export interface Contest {

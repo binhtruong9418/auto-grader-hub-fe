@@ -7,7 +7,7 @@ import {
     Card,
 } from 'antd';
 import toast from 'react-hot-toast';
-import adminContestService from "@/apis/service/adminContestService";
+import contestService from "@/apis/service/contestService.ts";
 
 const CreateContest: React.FC = () => {
     const [form] = Form.useForm();
@@ -24,7 +24,7 @@ const CreateContest: React.FC = () => {
                 isPublic: values.isPublic || false,
             };
 
-            const response = await adminContestService.createContest(contestData);
+            const response = await contestService.create(contestData);
 
             if (response) {
                 toast.success('Contest created successfully');

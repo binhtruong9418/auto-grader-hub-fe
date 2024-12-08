@@ -48,7 +48,8 @@ const UserProblemListPage = () => {
 			code: problem.problem.problemCode,
 			point: problem.maxSubmittedPoint,
 			tags: problem.problem.tags,
-			problemId: problem.problemId
+			problemId: problem.problemId,
+			maxTimeCommit: problem.problem.maxTimeCommit,
 		}));
 	} , [listUserProblems]);
 	
@@ -87,6 +88,16 @@ const UserProblemListPage = () => {
 			title: 'Point',
 			dataIndex: 'point',
 			key: 'point',
+		},
+		{
+			title: 'Max Submissions Count',
+			dataIndex: 'maxTimeCommit',
+			key: 'maxTimeCommit',
+			render: (text: any) => (
+				<div>
+					{text ? text : 'Unlimited'}
+				</div>
+			),
 		},
 		{
 			title: 'Tags',
