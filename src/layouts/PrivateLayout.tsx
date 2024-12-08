@@ -7,7 +7,7 @@ import {Header as AppHeader} from "@/components";
 import {FaCode, FaRegUser} from "react-icons/fa";
 import {IoMdHome} from "react-icons/io";
 import {CiViewList} from "react-icons/ci";
-import {MdManageAccounts, MdOutlineEmojiEvents, MdSkipNext, MdSkipPrevious} from "react-icons/md";
+import {MdManageAccounts, MdOutlineEmojiEvents, MdOutlineTask, MdSkipNext, MdSkipPrevious} from "react-icons/md";
 import useWindowSize from "@/hooks/useWindowSize.ts";
 import {GrPersonalComputer} from "react-icons/gr";
 import {FaLaptopCode} from "react-icons/fa6";
@@ -41,7 +41,8 @@ const itemRoute = {
 	"3.2.2": "/admin/problems",
 	"3.3.1": "/admin/contest/create",
 	"3.3.2": "/admin/contests",
-	"3.4": "/admin/join-contest-request"
+	"3.4": "/admin/join-contest-request",
+	"3.5": "/admin/submissions",
 }
 
 const PrivateLayout = () => {
@@ -88,6 +89,7 @@ const PrivateLayout = () => {
 						getItem("List Contest", "3.3.2", <CiViewList />),
 					]),
 					getItem("Join Contest Request", "3.4", <BsChatSquareQuote />),
+					getItem("Submissions", "3.5", <MdOutlineTask />),
 				])
 			];
 		} else {

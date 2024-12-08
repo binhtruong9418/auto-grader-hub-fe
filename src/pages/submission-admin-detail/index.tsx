@@ -3,7 +3,7 @@ import MainPageSubmission from "@/pages/submission-detail/components/MainPageSub
 const SubmissionDetail = () => {
 	
 	return (
-		<MainPageSubmission isAdmin={false} />
+		<MainPageSubmission isAdmin={true} />
 	)
 }
 

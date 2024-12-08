@@ -31,7 +31,7 @@ const privateRoutes = {
 		component: UserProblemDetailsPage,
 	},
 	submissionDetail: {
-		path: '/submission-detail/:id',
+		path: '/my-submission-detail/:id',
 		component: SubmissionDetailPage,
 	},
 	listProblem: {

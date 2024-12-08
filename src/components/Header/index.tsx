@@ -12,6 +12,7 @@ import useWindowSize from "@/hooks/useWindowSize.ts";
 const AppHeader = ({setCollapsed, collapsed}: { setCollapsed: (value: boolean) => void, collapsed: boolean }) => {
 	const navigate = useNavigate();
 	const {width} = useWindowSize();
+	const user = JSON.parse(localStorage.getItem('userInfo') || '{}');
 	
 	const handleLogout = () => {
 		try {
@@ -40,37 +41,35 @@ const AppHeader = ({setCollapsed, collapsed}: { setCollapsed: (value: boolean) =
 				}
 			</div>
 			<div className="header-right">
-				{/*<div className="header-right-item">*/}
-				{/*    <Select*/}
-				{/*        options={[*/}
-				{/*            {value: 'en', label: 'English'},*/}
-				{/*            {value: 'vi', label: 'Vietnamese'}*/}
-				{/*        ]}*/}
-				{/*        className={'mr-3 w-32'}*/}
-				{/*    >*/}
-				{/*    <LiaFlagUsaSolid/>*/}
-				{/*    </Select>*/}
-				{/*</div>*/}
+				<div className="header-right-item mr-2">
+					{
+						user?.role === 'admin' && (
+							<div>
+								ADMIN
+							</div>
+						)
+					}
+				</div>
 				<Popover
 					className="user"
 					content={() => (
 						<div>
-							{/* <div className="mb-2">
+							<div className="mb-2">
 								<strong>{user.name}</strong>
 								<div className="text-gray-500 text-sm">{user.email}</div>
-							</div> */}
-							<Button
-								type="primary"
-								block
-								className="mb-2"
-								onClick={() => navigate("/profile")} // Navigate to the profile page
-							>
-								View Profile
-							</Button>
+							</div>
+							{/*<Button*/}
+							{/*	type="primary"*/}
+							{/*	block*/}
+							{/*	className="mb-2"*/}
+							{/*	onClick={() => navigate("/profile")} // Navigate to the profile page*/}
+							{/*>*/}
+							{/*	View Profile*/}
+							{/*</Button>*/}
 							<Button
 								danger
 								block
-								icon={<GrLogout />}
+								icon={<GrLogout/>}
 								onClick={handleLogout}
 							>
 								Logout

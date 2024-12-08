@@ -18,3 +18,5 @@ export {default as EditProblemPage} from "@/pages/edit-problem";
 export {default as ListAdminProblemPage} from "@/pages/list-admin-problem";
 export {default as EditContestPage} from "@/pages/edit-contest";
 export {default as ListAdminContestPage} from "@/pages/list-admin-contest";
+export {default as ListAdminSubmissionPage} from "@/pages/list-admin-submission";
+export {default as SubmissionAdminDetailPage} from "@/pages/submission-admin-detail";

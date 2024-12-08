@@ -22,8 +22,6 @@ const ProblemDetail = () => {
 		enabled: !!problemId
 	})
 	
-	console.log('problemData', problemData);
-	
 	const testCases = useMemo(() => {
 		if (!problemData) return [];
 		return problemData?.problem?.testCases.map((testCase: any, index: number) => ({
