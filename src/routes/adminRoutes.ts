@@ -4,7 +4,7 @@ import {
 	EditProblemPage,
 	ListAdminProblemPage,
 	EditContestPage,
-	ListAdminContestPage
+	ListAdminContestPage, JoinContestRequestsPage
 } from "@/pages";
 
 const adminRoutes = {
@@ -31,6 +31,10 @@ const adminRoutes = {
 	listAdminContest: {
 		path: '/admin/contests',
 		component: ListAdminContestPage
+	},
+	joinContest:{
+		path: '/admin/join-contest-request',
+		component: JoinContestRequestsPage
 	}
 }
 

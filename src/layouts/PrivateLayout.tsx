@@ -11,6 +11,7 @@ import {MdManageAccounts, MdOutlineEmojiEvents, MdSkipNext, MdSkipPrevious} from
 import useWindowSize from "@/hooks/useWindowSize.ts";
 import {GrPersonalComputer} from "react-icons/gr";
 import {FaLaptopCode} from "react-icons/fa6";
+import {BsChatSquareQuote} from "react-icons/bs";
 
 const {Header, Content, Sider} = Layout;
 
@@ -40,6 +41,7 @@ const itemRoute = {
 	"3.2.2": "/admin/problems",
 	"3.3.1": "/admin/contest/create",
 	"3.3.2": "/admin/contests",
+	"3.4": "/admin/join-contest-request"
 }
 
 const PrivateLayout = () => {
@@ -85,6 +87,7 @@ const PrivateLayout = () => {
 						getItem("Create Contest", "3.3.1", <MdOutlineEmojiEvents />),
 						getItem("List Contest", "3.3.2", <CiViewList />),
 					]),
+					getItem("Join Contest Request", "3.4", <BsChatSquareQuote />),
 				])
 			];
 		} else {

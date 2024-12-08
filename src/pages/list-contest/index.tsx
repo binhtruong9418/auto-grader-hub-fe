@@ -7,6 +7,8 @@ import {useQuery} from "@tanstack/react-query";
 import contestService from "@/apis/service/contestService.ts";
 import {ContestStatus} from "@/constants/types.ts";
 import moment from "moment/moment";
+import joinContestService from "@/apis/service/joinContestService.ts";
+import toast from "react-hot-toast";
 
 const UserContestList = () => {
 	const navigate = useNavigate();
@@ -15,13 +17,21 @@ const UserContestList = () => {
 		limit: 10,
 		q: ""
 	})
+	const [isLoadingData, setIsLoadingData] = useState<{
+		id: number | null,
+		loading: boolean
+	}>({
+		id: null,
+		loading: false
+	});
 	
 	const {
 		data: listContestData = {
 			contents: [],
 			totalElements: 0
 		},
-		isLoading: listContestLoading
+		isLoading: listContestLoading,
+		refetch: refetchContest
 	} = useQuery({
 		queryKey: ['allContests', searchParams],
 		queryFn: async ({queryKey}: any) => {
@@ -30,10 +40,37 @@ const UserContestList = () => {
 		}
 	})
 	
-	const {contents: listContests = [], totalElements: totalContests} = listContestData || {};
+	const {listContests, totalContests} = useMemo(() => {
+		return {
+			listContests: listContestData?.contents || [],
+			totalContests: listContestData?.totalElements || 0
+		}
+	}, [listContestData]);
+	
+	const {
+		data: listRequestData = {
+			contents: [],
+		},
+		refetch: refetchRequest
+	} = useQuery({
+		queryKey: ['allUserRequests', listContests],
+		queryFn: async ({queryKey}: any) => {
+			const [, _listContests] = queryKey;
+			const listContestIds = _listContests.map((contest: any) => contest.id).join(',');
+			const res = await joinContestService.getMyRequests({
+				page: 0,
+				limit: _listContests.length,
+				listContestIds: listContestIds,
+				status: 0
+			})
+			return res;
+		},
+		enabled: !!listContests
+	})
 	
 	const listContestsTableData = useMemo(() => {
 		if (!listContests) return [];
+		const listRequests = listRequestData?.contents || [];
 		return listContests.map((contest: any) => ({
 			title: contest?.contestName,
 			startTime: moment(contest?.creatdAt).format('YYYY-MM-DD HH:mm'),
@@ -41,9 +78,10 @@ const UserContestList = () => {
 			status: contest?.status,
 			key: contest.id,
 			isJoined: contest?.isJoined,
-			id: contest.id
+			id: contest.id,
+			isWaiting: listRequests.some((request: any) => request.contestId === contest.id && request.status === 0)
 		}));
-	}, [listContests]);
+	}, [listContests, listRequestData]);
 	
 	const columns = [
 		{
@@ -94,18 +132,39 @@ const UserContestList = () => {
 			render: (_: any, record: any) => (
 				<Button
 					type="primary"
-					disabled={record.status === ContestStatus.COMPLETED || record.isJoined}
-					onClick={() => handleRegister(record.id)}
+					disabled={record.status === ContestStatus.COMPLETED || record.isJoined || record.isWaiting}
+					onClick={() => handleRegister(record.id).then()}
+					loading={isLoadingData.loading && isLoadingData.id === record.id}
 				>
-					{record.isJoined ? 'Registered' : 'Register'}
+					{record.isJoined ? 'Registered' : record.isWaiting ? 'Waiting' : 'Register'}
 				</Button>
 			),
 		},
 	];
 	
-	const handleRegister = (contestId: number) => {
-		// Handle registration logic here
-		console.log(`Registering for contest ${contestId}`);
+	const handleRegister = async (contestId: number) => {
+		try {
+			const isWaiting = listContestsTableData.find((contest: any) => contest.id === contestId)?.isWaiting;
+			if (isWaiting) return toast.error('You are already in the waiting list');
+			
+			setIsLoadingData({
+				id: contestId,
+				loading: true
+			});
+			
+			await joinContestService.create(contestId);
+			await refetchContest();
+			await refetchRequest();
+			toast.success('Your request has been sent');
+		} catch (error) {
+			console.error('Error registering contest:', error);
+			toast.error('Failed to register contest');
+		} finally {
+			setIsLoadingData({
+				id: null,
+				loading: false
+			});
+		}
 	};
 	
 	return (

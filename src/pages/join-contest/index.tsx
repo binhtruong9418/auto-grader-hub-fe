@@ -1,56 +1,110 @@
-import { useState, useEffect } from "react";
-import { Table, Button, Tag, message, Space, Select } from "antd";
+import {useState, useMemo} from "react";
+import {Table, Button, Tag, message, Space, Select, Input} from "antd";
 import joinContestService from "@/apis/service/joinContestService";
+import {useQuery} from "@tanstack/react-query";
+import {formatObject} from "@/utils";
+import debounce from "lodash/debounce";
+import toast from "react-hot-toast";
 
 const { Option } = Select;
 
 const JoinContestRequestsPage = () => {
-  const [loading, setLoading] = useState(false);
-  const [requests, setRequests] = useState([]);
-  const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
-  const [statusFilter, setStatusFilter] = useState<string | null>(null);
+  const [searchParams, setSearchParams] = useState({
+    page: 0,
+    limit: 10,
+    status: "",
+    email: "",
+    contestId: "",
+  });
+  const [searchEmail, setSearchEmail] = useState("");
+  const [isLoadingApprove, setIsLoadingApprove] = useState<{
+    id: number | null;
+    loading: boolean;
+  }>({
+    id: null,
+    loading: false,
+  });
+  const [isLoadingReject, setIsLoadingReject] = useState<{
+    id: number | null;
+    loading: boolean;
+  }>({
+    id: null,
+    loading: false,
+  });
+  const {
+    data: listRequestsData = {
+      contents: [],
+      totalElements: 0,
+    },
+    refetch: fetchRequests,
+    isLoading: loading,
+  } = useQuery({
+    queryKey: ["allJoinRequests", searchParams],
+    queryFn: async ({ queryKey }: any) => {
+      const [, searchParams] = queryKey;
+      return await joinContestService.getAllRequests(formatObject(searchParams));
+    },
+  });
 
-  useEffect(() => {
-    fetchRequests();
-  }, [pagination.current, statusFilter]);
-
-  const fetchRequests = async () => {
-    setLoading(true);
+  const { totalElements: totalRequest } = listRequestsData || {};
+  const requestTableData = useMemo(() => {
+    const listRequests = listRequestsData?.contents || [];
+    return listRequests.map((request: any) => ({
+      ...request,
+      id: request.id,
+      email: request.user.email,
+      contestName: request.contest.contestName,
+      status: request.status,
+    }));
+  }, [listRequestsData]);
+  const handleApprove = async (id: number) => {
     try {
-      const { data } = await joinContestService.getAllRequests({
-        page: 0, 
-        limit: 10,
+      setIsLoadingApprove({
+        id: id,
+        loading: true,
       });
-      setRequests(data.contents);
-      setPagination((prev) => ({ ...prev, total: data.totalElements }));
-    } catch (error) {
-      console.error("Failed to fetch requests:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleApprove = async (id: string) => {
-    try {
       await joinContestService.approveRequest(id);
-      message.success("Request approved successfully!");
-      fetchRequests();
+      toast.success("Request approved successfully!");
+      await fetchRequests();
     } catch (error) {
       console.error("Error approving request:", error);
       message.error("Failed to approve the request.");
+    } finally {
+      setIsLoadingApprove({
+        id: null,
+        loading: false,
+      });
     }
   };
 
-  const handleReject = async (id: string) => {
+  const handleReject = async (id: number) => {
     try {
+      setIsLoadingReject({
+        id: id,
+        loading: true,
+      });
       await joinContestService.rejectRequest(id);
-      message.success("Request rejected successfully!");
-      fetchRequests();
+      toast.success("Request rejected successfully!");
+      await fetchRequests();
     } catch (error) {
       console.error("Error rejecting request:", error);
       message.error("Failed to reject the request.");
+    } finally {
+      setIsLoadingReject({
+        id: null,
+        loading: false,
+      });
     }
   };
+  
+  const debouncedSearch = useMemo(() => {
+    return debounce((value: string) => {
+      setSearchParams({
+        ...searchParams,
+        email: value,
+      });
+    }, 300);
+  }, []);
 
   const columns = [
     {
@@ -59,9 +113,9 @@ const JoinContestRequestsPage = () => {
       key: "email",
     },
     {
-      title: "Contest ID",
-      dataIndex: "contestId",
-      key: "contestId",
+      title: "Contest Name",
+      dataIndex: "contestName",
+      key: "contestName",
     },
     {
         title: "Status",
@@ -86,6 +140,7 @@ const JoinContestRequestsPage = () => {
             type="primary"
             disabled={record.status !== 0}
             onClick={() => handleApprove(record.id)}
+            loading={isLoadingApprove.loading && isLoadingApprove.id === record.id}
           >
             Approve
           </Button>
@@ -93,6 +148,7 @@ const JoinContestRequestsPage = () => {
             type="default"
             danger
             disabled={record.status !== 0}
+            loading={isLoadingReject.loading && isLoadingReject.id === record.id}
             onClick={() => handleReject(record.id)}
           >
             Reject
@@ -109,22 +165,45 @@ const JoinContestRequestsPage = () => {
         <Select
           placeholder="Filter by Status"
           allowClear
-          onChange={(value) => setStatusFilter(value)}
+          onChange={(value) => {
+            setSearchParams({
+              ...searchParams,
+              status: value,
+            });
+          }}
           style={{ width: 200 }}
         >
-          <Option value="0">Pending</Option>
-          <Option value="1">Approved</Option>
-          <Option value="2">Rejected</Option>
+          <Option value={undefined}>All</Option>
+          <Option value={0}>Pending</Option>
+          <Option value={1}>Approved</Option>
+          <Option value={2}>Rejected</Option>
         </Select>
+        
+        <Input
+          placeholder="Search by email"
+          value={searchEmail}
+          onChange={(e) => {
+            setSearchEmail(e.target.value);
+            debouncedSearch(e.target.value);
+          }}
+          style={{ width: 200 }}
+        />
       </Space>
       <Table
         columns={columns}
-        dataSource={requests}
+        dataSource={requestTableData}
         loading={loading}
         rowKey="id"
         pagination={{
-          ...pagination,
-          onChange: (page) => setPagination((prev) => ({ ...prev, current: page })),
+          current: searchParams.page + 1,
+          total: totalRequest,
+          pageSize: searchParams.limit,
+          onChange: (page) => {
+            setSearchParams({
+              ...searchParams,
+              page: page - 1,
+            });
+          },
         }}
       />
     </div>

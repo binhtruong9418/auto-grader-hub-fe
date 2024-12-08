@@ -7,7 +7,6 @@ import {
 	UserProblemDetailsPage,
 	SubmissionDetailPage,
 	ListProblemPage, ProblemDetailPage,
-	JoinContestRequestsPage
 } from '@/pages';
 
 const privateRoutes = {
@@ -47,10 +46,6 @@ const privateRoutes = {
 		path: '/profile',
 		component: ProfilePage,
 	},
-	joinContest:{
-		path: '/join-contest',
-		component: JoinContestRequestsPage
-	}
 }
 
 export default privateRoutes;
