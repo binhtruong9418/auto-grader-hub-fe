@@ -1,5 +1,5 @@
 import {useMemo, useState} from 'react';
-import {Flex, Input, Select, Spin, Table, Tag, Typography} from 'antd';
+import {Flex, Input, Popconfirm, Select, Spin, Table, Tag, Typography} from 'antd';
 import {useNavigate} from 'react-router-dom';
 import {CalendarOutlined} from '@ant-design/icons';
 import {formatObject} from "@/utils";
@@ -9,7 +9,9 @@ import problemService from "@/apis/service/problemService.ts";
 import debounce from "lodash/debounce";
 import {Contest} from "@/apis/type.ts";
 import contestService from "@/apis/service/contestService.ts";
-import { HiPencilAlt } from 'react-icons/hi';
+import {HiPencilAlt} from 'react-icons/hi';
+import {BiTrash} from "react-icons/bi";
+import toast from "react-hot-toast";
 
 const {Text} = Typography
 const {Option} = Select
@@ -31,6 +33,7 @@ const ListAdminProblem = () => {
 			totalElements: 0
 		},
 		isLoading: listProblemLoading,
+		refetch: refetchListProblem
 	} = useQuery({
 		queryKey: ['allAdminProblems', searchParams],
 		queryFn: async ({queryKey}: any) => {
@@ -70,7 +73,6 @@ const ListAdminProblem = () => {
 	}, [listProblems]);
 	
 	
-	
 	const debouncedSearch = useMemo(
 		() =>
 			debounce((value: string) => {
@@ -94,6 +96,17 @@ const ListAdminProblem = () => {
 			}, 500),
 		[]
 	);
+	
+	const handleDeleteProblem = async (id: number) => {
+		try {
+			await problemService.deleteProblem(id);
+			await refetchListProblem();
+			toast.success('Delete problem successfully')
+		} catch (error) {
+			console.log(error)
+			toast.error('Delete problem failed')
+		}
+	}
 	
 	const columns = [
 		{
@@ -172,9 +185,23 @@ const ListAdminProblem = () => {
 			title: 'Action',
 			key: 'action',
 			render: (_: string, record: any) => (
-				<div className="cursor-pointer hover:text-blue-500" onClick={() => navigate(`/admin/problem/edit/${record.id}`)}>
-					<HiPencilAlt size={20}/>
-				</div>
+				<Flex gap={2}>
+					<div className="cursor-pointer hover:text-blue-500"
+					     onClick={() => navigate(`/admin/problem/edit/${record.id}`)}>
+						<HiPencilAlt size={20}/>
+					</div>
+					<Popconfirm
+						title="Are you sure to delete this problem?"
+						onConfirm={() => handleDeleteProblem(record.id)}
+						okText="Yes"
+						cancelText="No"
+					>
+						<BiTrash
+							size={20}
+							className="cursor-pointer hover:text-red-500"
+						/>
+					</Popconfirm>
+				</Flex>
 			),
 		}
 	];
@@ -209,7 +236,7 @@ const ListAdminProblem = () => {
 				<Select
 					showSearch
 					placeholder="Search contest"
-					notFoundContent={isContestsFetching ? <Spin size="small" /> : 'No contest found'}
+					notFoundContent={isContestsFetching ? <Spin size="small"/> : 'No contest found'}
 					onSearch={debouncedSearchContest}
 					loading={isContestsFetching}
 					defaultActiveFirstOption={false}

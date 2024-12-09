@@ -25,6 +25,10 @@ const contestService = {
 		return await axiosClient.put(`/api/contest/${contestId}`, data);
 	},
 	
+	delete: async (contestId: string): Promise<any> => {
+		return await axiosClient.delete(`/api/contest/soft/${contestId}`);
+	},
+	
 }
 
 export default contestService;

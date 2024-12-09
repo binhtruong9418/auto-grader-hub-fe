@@ -16,6 +16,9 @@ const VerifyEmail = () => {
 	const [countdown, setCountdown] = useState(60);
 	const [canResend, setCanResend] = useState(false);
 	
+	const [isLoading, setIsLoading] = useState(false);
+	const [isResending, setIsResending] = useState(false);
+	
 	useEffect(() => {
 		if (email) {
 			form.setFieldValue('email', email);
@@ -39,17 +42,21 @@ const VerifyEmail = () => {
 	
 	const handleVerify = async (values: { email: string, code: string }) => {
 		try {
+			setIsLoading(true);
 			await userService.verifyEmail(values.email, values.code);
 			toast.success(t('Email verified successfully!'));
 			navigate('/login');
 		} catch (error) {
 			const errorMessage = (error as AxiosError<{ message: string }>)?.response?.data?.message || t('Verification failed!');
 			toast.error(errorMessage);
+		} finally {
+			setIsLoading(false);
 		}
 	};
 	
 	const handleResendEmail = async () => {
 		try {
+			setIsResending(true);
 			await userService.resendVerificationEmail(email!);
 			toast.success(t('Verification email resent!'));
 			setCanResend(false);
@@ -57,6 +64,8 @@ const VerifyEmail = () => {
 		} catch (error) {
 			const errorMessage = (error as AxiosError<{ message: string }>)?.response?.data?.message || t('Failed to resend verification email!');
 			toast.error(errorMessage);
+		} finally {
+			setIsResending(false);
 		}
 	};
 	
@@ -122,6 +131,7 @@ const VerifyEmail = () => {
 						onClick={form.submit}
 						className="auth-btn bg-black"
 						size="large"
+						loading={isLoading}
 					>
 						{t("Verify")}
 					</Button>
@@ -132,6 +142,7 @@ const VerifyEmail = () => {
 						className="auth-btn bg-black text-white"
 						size="large"
 						type={'primary'}
+						loading={isResending}
 					>
 						{canResend
 							? t("Resend Code")

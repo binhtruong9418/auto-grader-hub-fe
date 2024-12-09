@@ -1,5 +1,5 @@
 import {useMemo, useState} from 'react';
-import {Table, Tag} from 'antd';
+import {Popconfirm, Table, Tag} from 'antd';
 import {useNavigate} from 'react-router-dom';
 import {CalendarOutlined, TeamOutlined} from '@ant-design/icons';
 import {formatObject, getContestStatusColor} from "@/utils";
@@ -7,6 +7,9 @@ import {useQuery} from "@tanstack/react-query";
 import contestService from "@/apis/service/contestService.ts";
 import moment from "moment/moment";
 import {HiPencilAlt} from "react-icons/hi";
+import {BiTrash} from "react-icons/bi";
+import problemService from "@/apis/service/problemService.ts";
+import toast from "react-hot-toast";
 
 const ListAdminContest = () => {
 	const navigate = useNavigate();
@@ -21,7 +24,8 @@ const ListAdminContest = () => {
 			contents: [],
 			totalElements: 0
 		},
-		isLoading: listContestLoading
+		isLoading: listContestLoading,
+		refetch: refetchListContest
 	} = useQuery({
 		queryKey: ['allAdminContests', searchParams],
 		queryFn: async ({queryKey}: any) => {
@@ -43,6 +47,18 @@ const ListAdminContest = () => {
 			id: contest.id
 		}));
 	}, [listContests]);
+	
+	
+	const handleDeleteContest = async (id: number) => {
+		try {
+			await contestService.delete(id);
+			await refetchListContest();
+			toast.success('Delete contest successfully')
+		} catch (error) {
+			console.log(error)
+			toast.error('Delete contest failed')
+		}
+	}
 	
 	const columns = [
 		{
@@ -97,6 +113,18 @@ const ListAdminContest = () => {
 					     onClick={() => navigate(`/admin/contest/edit/${record.id}`)}>
 						<HiPencilAlt size={20}/>
 					</div>
+					
+					<Popconfirm
+						title="Are you sure to delete this contest?"
+						onConfirm={() => handleDeleteContest(record.id)}
+						okText="Yes"
+						cancelText="No"
+					>
+						<BiTrash
+							size={20}
+							className="cursor-pointer hover:text-red-500"
+						/>
+					</Popconfirm>
 				</div>
 			),
 		},

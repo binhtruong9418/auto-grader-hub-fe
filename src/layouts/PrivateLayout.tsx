@@ -36,7 +36,7 @@ const itemRoute = {
 	"2.1": "/my-contests",
 	"2.2": "/contests",
 	"2.3": "/list-problem",
-	"3.1": "/users",
+	"3.1": "/admin/users",
 	"3.2.1": "/admin/problem/create",
 	"3.2.2": "/admin/problems",
 	"3.3.1": "/admin/contest/create",

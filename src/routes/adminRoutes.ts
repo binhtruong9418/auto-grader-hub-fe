@@ -4,7 +4,7 @@ import {
 	EditProblemPage,
 	ListAdminProblemPage,
 	EditContestPage,
-	ListAdminContestPage, JoinContestRequestsPage, ListAdminSubmissionPage, SubmissionAdminDetailPage
+	ListAdminContestPage, JoinContestRequestsPage, ListAdminSubmissionPage, SubmissionAdminDetailPage, UserManagementPage
 } from "@/pages";
 
 const adminRoutes = {
@@ -43,6 +43,10 @@ const adminRoutes = {
 	submissionDetailAdmin: {
 		path: '/admin/submission-detail/:id',
 		component: SubmissionAdminDetailPage
+	},
+	listUsers: {
+		path: '/admin/users',
+		component: UserManagementPage
 	}
 }
 

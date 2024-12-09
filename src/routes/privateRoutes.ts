@@ -1,12 +1,11 @@
 import {
 	HomePage,
-	ProfilePage,
 	UserContestListPage,
 	ContestListPage,
 	UserProblemListPage,
 	UserProblemDetailsPage,
 	SubmissionDetailPage,
-	ListProblemPage, ProblemDetailPage,
+	ListProblemPage, ProblemDetailPage, ChangePasswordPage,
 } from '@/pages';
 
 const privateRoutes = {
@@ -43,8 +42,8 @@ const privateRoutes = {
 		component: ProblemDetailPage,
 	},
 	profile: {
-		path: '/profile',
-		component: ProfilePage,
+		path: '/change-password',
+		component: ChangePasswordPage,
 	},
 }
 

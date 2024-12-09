@@ -20,8 +20,17 @@ const userService = {
 	resetPassword: async (email: string, password: string, code: string): Promise<any> => {
 		return await axiosClient.post("/api/auth/reset-password", { email, password, code });
 	},
-	resendForgotPasswordEmail: async (email: string): Promise<any> => {
-		return await axiosClient.post("/api/auth/resend-reset-password-email", { email });
+	changePassword: async (oldPassword: string, newPassword: string): Promise<any> => {
+		return await axiosClient.post("/api/auth/change-password", { oldPassword, newPassword });
+	},
+	getUsers: async (params: any = {}): Promise<any> => {
+		return await axiosClient.get("/api/auth/users", { params });
+	},
+	updateUserRole: async (userId: number, role: 'user' | 'admin'): Promise<any> => {
+		return await axiosClient.put(`/api/auth/update-user/`, {
+			userId,
+			role: role,
+		});
 	}
 };
 

@@ -41,6 +41,10 @@ const problemService = {
 		return await axiosClient.put(`/api/problem/${problemId}`, {
 			...problem
 		});
+	},
+	
+	deleteProblem: async (problemId: number) => {
+		return await axiosClient.delete(`/api/problem/soft/${problemId}`);
 	}
 }
 
