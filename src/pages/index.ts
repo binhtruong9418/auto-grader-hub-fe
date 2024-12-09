@@ -2,6 +2,8 @@ export {default as HomePage} from "@/pages/home/HomePage";
 export {default as NotFoundPage} from "@/pages/not-found";
 export {default as LoginPage} from "@/pages/auth/Login.tsx";
 export {default as RegisterPage} from "@/pages/auth/Register.tsx";
+export {default as VerifyEmailPage} from "@/pages/auth/VerifyEmail.tsx";
+export {default as ResetPasswordPage} from "@/pages/auth/ResetPassword.tsx";
 export {default as ForgotPasswordPage} from "@/pages/auth/ForgotPassword.tsx";
 export {default as UserProblemListPage} from "@/pages/list-user-problem";
 export {default as UserProblemDetailsPage} from "@/pages/user-problem";

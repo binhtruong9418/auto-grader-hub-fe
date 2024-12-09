@@ -58,14 +58,14 @@ const AppHeader = ({setCollapsed, collapsed}: { setCollapsed: (value: boolean) =
 								<strong>{user.name}</strong>
 								<div className="text-gray-500 text-sm">{user.email}</div>
 							</div>
-							{/*<Button*/}
-							{/*	type="primary"*/}
-							{/*	block*/}
-							{/*	className="mb-2"*/}
-							{/*	onClick={() => navigate("/profile")} // Navigate to the profile page*/}
-							{/*>*/}
-							{/*	View Profile*/}
-							{/*</Button>*/}
+							<Button
+								type="primary"
+								block
+								className="mb-2"
+								onClick={() => navigate("/change-password")} // Navigate to the profile page
+							>
+								Change Password
+							</Button>
 							<Button
 								danger
 								block
