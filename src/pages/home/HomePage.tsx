@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { Card, Row, Col, Statistic, Button, Table, List, Timeline } from "antd";
+import { Card, Row, Col, Statistic, Button, Table, List } from "antd";
 import {
   UserOutlined,
   CodeOutlined,
@@ -9,9 +9,10 @@ import {
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import homeService from "@/apis/service/homeService";
+
 const Home = () => {
   // Fetch statistics
-  const { data: stats, isLoading: statsLoading } = useQuery({
+  const { data: stats } = useQuery({
     queryKey: ["home-statistics"],
     queryFn: () => homeService.getStatistics(),
   });
@@ -21,19 +22,21 @@ const Home = () => {
     queryKey: ["recent-contests"],
     queryFn: () => homeService.getRecentContests(),
   });
+
+  // Fetch recent problems
+  const { data: recentProblems } = useQuery({
+    queryKey: ["recent-problems"],
+    queryFn: () => homeService.getRecentProblems(),
+  });
+
   // Fetch top users
   const { data: topUsers } = useQuery({
     queryKey: ["top-users"],
     queryFn: () => homeService.getTopUsers(),
   });
-  // Fetch recent activities
-  const { data: recentActivities } = useQuery({
-    queryKey: ["recent-activities"],
-    queryFn: () => homeService.getRecentActivities(),
-  });
+
   return (
     <div className="p-6">
-      {" "}
       {/* Statistics Cards */}
       <Row gutter={[24, 24]} className="mb-6">
         <Col xs={24} sm={12} lg={6}>
@@ -53,8 +56,7 @@ const Home = () => {
             <div className="mt-4">
               <Link to="/users">
                 <Button type="link" className="text-white p-0">
-                  {" "}
-                  View All Users →{" "}
+                  View All Users →
                 </Button>
               </Link>
             </div>
@@ -77,7 +79,7 @@ const Home = () => {
             <div className="mt-4">
               <Link to="/problems">
                 <Button type="link" className="text-white p-0">
-                  View All Problems →{" "}
+                  View All Problems →
                 </Button>
               </Link>
             </div>
@@ -93,14 +95,14 @@ const Home = () => {
           >
             <Statistic
               title={<span className="text-white">Active Contests</span>}
-              value={stats?.activeContests || 0}
+              value={stats?.totalContests || 0}
               prefix={<TrophyOutlined />}
               valueStyle={{ color: "white" }}
             />
             <div className="mt-4">
               <Link to="/contests">
                 <Button type="link" className="text-white p-0">
-                  View All Contests →{" "}
+                  View All Contests →
                 </Button>
               </Link>
             </div>
@@ -130,6 +132,7 @@ const Home = () => {
           </Card>
         </Col>
       </Row>
+
       {/* Main Content */}
       <Row gutter={[24, 24]}>
         {/* Left Column */}
@@ -145,13 +148,13 @@ const Home = () => {
             className="mb-6 hover:shadow-md transition-shadow"
           >
             <Table
-              dataSource={recentContests}
+              dataSource={recentContests} // Array of contests
               pagination={false}
               columns={[
                 {
                   title: "Contest Name",
-                  dataIndex: "name",
-                  key: "name",
+                  dataIndex: "contestName",
+                  key: "contestName",
                   render: (text, record) => (
                     <Link
                       to={`/contests/${record.id}`}
@@ -162,33 +165,100 @@ const Home = () => {
                   ),
                 },
                 {
-                  title: "Start Time",
-                  dataIndex: "startTime",
-                  key: "startTime",
+                  title: "Creator",
+                  dataIndex: "creator",
+                  key: "creator",
                 },
-                { title: "Duration", dataIndex: "duration", key: "duration" },
+                {
+                  title: "Description",
+                  dataIndex: "description",
+                  key: "description",
+                },
                 {
                   title: "Status",
                   dataIndex: "status",
                   key: "status",
-                  render: (status) => (
-                    <span
-                      className={`px-2 py-1 rounded-full text-sm ${
-                        status === "ACTIVE"
-                          ? "bg-green-100 text-green-800"
-                          : status === "UPCOMING"
-                          ? "bg-yellow-100 text-yellow-800"
-                          : "bg-gray-100 text-gray-800"
-                      }`}
+                  render: (status) => {
+                    let statusColor = "";
+                    let statusText = "";
+                    let statusClass =
+                      "text-sm font-semibold px-3 py-1 rounded-full";
+
+                    if (status === "running") {
+                      statusColor = "bg-green-500 text-white";
+                      statusText = "Active";
+                    } else {
+                      statusColor = "bg-yellow-500 text-white";
+                      statusText = "Upcoming";
+                    }
+
+                    return (
+                      <span className={`${statusClass} ${statusColor}`}>
+                        {statusText}
+                      </span>
+                    );
+                  },
+                },
+              ]}
+            />
+          </Card>
+          {/* Recent Problems */}
+          <Card
+            title={
+              <span className="text-lg">
+                <CodeOutlined className="mr-2" />
+                Recent Problems
+              </span>
+            }
+            className="mb-6 hover:shadow-md transition-shadow"
+          >
+            <Table
+              dataSource={recentProblems} // Array of problems
+              pagination={false}
+              columns={[
+                {
+                  title: "Problem Name",
+                  dataIndex: "problemName",
+                  key: "problemName",
+                  render: (text, record) => (
+                    <Link
+                      to={`/problems/${record.id}`}
+                      className="text-blue-500 hover:text-blue-700"
                     >
-                      {status}
-                    </span>
+                      {text}
+                    </Link>
                   ),
+                },
+                {
+                  title: "Problem Code",
+                  dataIndex: "problemCode",
+                  key: "problemCode",
+                },
+                {
+                  title: "Difficulty",
+                  dataIndex: "difficulty",
+                  key: "difficulty",
+                },
+                {
+                  title: "CPU Time Limit",
+                  dataIndex: "cpuTimeLimit",
+                  key: "cpuTimeLimit",
+                },
+                {
+                  title: "Memory Limit",
+                  dataIndex: "memoryLimit",
+                  key: "memoryLimit",
+                },
+                {
+                  title: "Tags",
+                  dataIndex: "tags",
+                  key: "tags",
                 },
               ]}
             />
           </Card>
         </Col>
+
         {/* Right Column */}
         <Col xs={24} lg={12}>
           {/* Top Users */}
@@ -221,8 +291,15 @@ const Home = () => {
                         {index + 1}
                       </div>
                     }
-                    title={<Link to={`/users/${user.id}`}>{user.name}</Link>}
-                    description={`Score: ${user.score} | Solved: ${user.solved}`}
+                    title={
+                      <Link
+                        to={`/users/${user.id}`}
+                        className="text-blue-500 hover:text-blue-700"
+                      >
+                        {user.email}
+                      </Link>
+                    }
+                    description={`Score: ${user.totalScore} | Solved: ${user.totalSolved}`}
                   />
                 </List.Item>
               )}
@@ -233,4 +310,5 @@ const Home = () => {
     </div>
   );
 };
+
 export default Home;
