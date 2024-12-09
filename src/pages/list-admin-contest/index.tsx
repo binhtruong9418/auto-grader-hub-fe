@@ -8,7 +8,6 @@ import contestService from "@/apis/service/contestService.ts";
 import moment from "moment/moment";
 import {HiPencilAlt} from "react-icons/hi";
 import {BiTrash} from "react-icons/bi";
-import problemService from "@/apis/service/problemService.ts";
 import toast from "react-hot-toast";
 
 const ListAdminContest = () => {
