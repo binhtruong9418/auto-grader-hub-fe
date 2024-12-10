@@ -38,7 +38,7 @@ const ProblemDetail = () => {
 			key: 'input',
 			render: (input: string) => {
 				return (
-					<div className="whitespace-pre-wrap max-w-2xl">{input}</div>
+					<div className="whitespace-pre-wrap max-w-2xl max-h-40 overflow-auto">{input}</div>
 				);
 			}
 		},
@@ -48,7 +48,7 @@ const ProblemDetail = () => {
 			key: 'expectedOutput',
 			render: (expectedOutput: string) => {
 				return (
-					<div className="whitespace-pre-wrap max-w-2xl">{expectedOutput}</div>
+					<div className="whitespace-pre-wrap max-w-2xl max-h-40 overflow-auto">{expectedOutput}</div>
 				);
 			}
 		},

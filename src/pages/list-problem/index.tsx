@@ -44,7 +44,7 @@ const ListProblem = () => {
 		if (!listProblems) return [];
 		return listProblems.map((problem: any) => ({
 			...problem,
-			createdAt: moment(problem.createdAt).format('YYYY-MM-DD')
+			createdAt: moment(problem.createdAt).format('YYYY-MM-DD HH:mm')
 		}));
 	}, [listProblems]);
 	

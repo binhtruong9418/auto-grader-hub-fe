@@ -23,6 +23,7 @@ const AppHeader = ({setCollapsed, collapsed}: { setCollapsed: (value: boolean) =
 			console.log(err);
 		}
 	};
+	console.log('user', user);
 	return (
 		<div className="app-header">
 			<div className="header-left">
@@ -54,9 +55,18 @@ const AppHeader = ({setCollapsed, collapsed}: { setCollapsed: (value: boolean) =
 					className="user"
 					content={() => (
 						<div>
-							<div className="mb-2">
-								<strong>{user.name}</strong>
-								<div className="text-gray-500 text-sm">{user.email}</div>
+							<div>
+								<strong>{user.email}</strong>
+							</div>
+							<div className={'flex items-center gap-2'}>
+								<strong>Total Score:</strong>
+								<div className="text-gray-500 text-sm">{user.totalScore}</div>
+							</div>
+							<div>
+								<div className={'flex items-center gap-2'}>
+									<strong>Total Problem Solved:</strong>
+									<div className="text-gray-500 text-sm">{user.totalSolved}</div>
+								</div>
 							</div>
 							<Button
 								type="primary"
@@ -64,7 +74,7 @@ const AppHeader = ({setCollapsed, collapsed}: { setCollapsed: (value: boolean) =
 								className="mb-2"
 								onClick={() => navigate("/change-password")} // Navigate to the profile page
 							>
-								Change Password
+							Change Password
 							</Button>
 							<Button
 								danger

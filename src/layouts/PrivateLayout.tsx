@@ -4,7 +4,7 @@ import {Layout, Menu} from "antd";
 import './index.css';
 import {Outlet, useLocation, useNavigate} from "react-router-dom";
 import {Header as AppHeader} from "@/components";
-import {FaCode, FaRegUser} from "react-icons/fa";
+import {FaCode, FaRegUser, FaTag} from "react-icons/fa";
 import {IoMdHome} from "react-icons/io";
 import {CiViewList} from "react-icons/ci";
 import {MdManageAccounts, MdOutlineEmojiEvents, MdOutlineTask, MdSkipNext, MdSkipPrevious} from "react-icons/md";
@@ -39,6 +39,7 @@ const itemRoute = {
 	"3.1": "/admin/users",
 	"3.2.1": "/admin/problem/create",
 	"3.2.2": "/admin/problems",
+	"3.2.3": "/admin/tags",
 	"3.3.1": "/admin/contest/create",
 	"3.3.2": "/admin/contests",
 	"3.4": "/admin/join-contest-request",
@@ -83,6 +84,7 @@ const PrivateLayout = () => {
 					getItem("Problem", "3.2", <FaLaptopCode />, [
 						getItem("Create Problem", "3.2.1", <FaLaptopCode />),
 						getItem("List Problem", "3.2.2", <CiViewList />),
+						getItem("Tags", "3.2.3", <FaTag />),
 					]),
 					getItem("Contest", "3.3", <MdOutlineEmojiEvents />, [
 						getItem("Create Contest", "3.3.1", <MdOutlineEmojiEvents />),
