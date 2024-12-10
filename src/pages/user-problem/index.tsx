@@ -131,7 +131,7 @@ const UserProblemDetail = () => {
 				const shortId = id.slice(0, 6);
 				return (
 					<div className="cursor-pointer hover:text-blue-500"
-					     onClick={() => navigate(`/submission-detail/${id}`)}>
+					     onClick={() => navigate(`/my-submission-detail/${id}`)}>
 						{shortId}
 					</div>
 				);

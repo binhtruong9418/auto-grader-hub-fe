@@ -15,6 +15,14 @@ const submissionService = {
 	
 	getByHash: async (hash: string): Promise<any> => {
 		return await axiosClient.get(`/api/submissions/get-by-hash/${hash}`);
+	},
+	
+	getAllAdmin: async (query: any = {}): Promise<any> => {
+		return await axiosClient.get("/api/submissions/admin", { params: query });
+	},
+	
+	getByHashAdmin: async (hash: string): Promise<any> => {
+		return await axiosClient.get(`/api/submissions/admin/get-by-hash/${hash}`);
 	}
 }
 

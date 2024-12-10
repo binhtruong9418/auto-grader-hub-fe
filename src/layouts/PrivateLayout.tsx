@@ -7,10 +7,11 @@ import {Header as AppHeader} from "@/components";
 import {FaCode, FaRegUser} from "react-icons/fa";
 import {IoMdHome} from "react-icons/io";
 import {CiViewList} from "react-icons/ci";
-import {MdManageAccounts, MdOutlineEmojiEvents, MdSkipNext, MdSkipPrevious} from "react-icons/md";
+import {MdManageAccounts, MdOutlineEmojiEvents, MdOutlineTask, MdSkipNext, MdSkipPrevious} from "react-icons/md";
 import useWindowSize from "@/hooks/useWindowSize.ts";
 import {GrPersonalComputer} from "react-icons/gr";
 import {FaLaptopCode} from "react-icons/fa6";
+import {BsChatSquareQuote} from "react-icons/bs";
 
 const {Header, Content, Sider} = Layout;
 
@@ -35,9 +36,13 @@ const itemRoute = {
 	"2.1": "/my-contests",
 	"2.2": "/contests",
 	"2.3": "/list-problem",
-	"3.1": "/users",
-	"3.2": "/admin/problem/create",
-	"3.3": "/admin/contest/create",
+	"3.1": "/admin/users",
+	"3.2.1": "/admin/problem/create",
+	"3.2.2": "/admin/problems",
+	"3.3.1": "/admin/contest/create",
+	"3.3.2": "/admin/contests",
+	"3.4": "/admin/join-contest-request",
+	"3.5": "/admin/submissions",
 }
 
 const PrivateLayout = () => {
@@ -75,8 +80,16 @@ const PrivateLayout = () => {
 				]),
 				getItem("Admin", "3", <MdManageAccounts />, [
 					getItem("Users", "3.1", <FaRegUser/>),
-					getItem("Create Problem", "3.2", <FaLaptopCode />),
-					getItem("Create Contest", "3.3", <MdOutlineEmojiEvents />),
+					getItem("Problem", "3.2", <FaLaptopCode />, [
+						getItem("Create Problem", "3.2.1", <FaLaptopCode />),
+						getItem("List Problem", "3.2.2", <CiViewList />),
+					]),
+					getItem("Contest", "3.3", <MdOutlineEmojiEvents />, [
+						getItem("Create Contest", "3.3.1", <MdOutlineEmojiEvents />),
+						getItem("List Contest", "3.3.2", <CiViewList />),
+					]),
+					getItem("Join Contest Request", "3.4", <BsChatSquareQuote />),
+					getItem("Submissions", "3.5", <MdOutlineTask />),
 				])
 			];
 		} else {

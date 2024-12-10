@@ -103,6 +103,16 @@ const ListProblem = () => {
 			},
 		},
 		{
+			title: 'Max Submissions Count',
+			dataIndex: 'maxTimeCommit',
+			key: 'maxTimeCommit',
+			render: (text: any) => (
+				<Text>
+					{text ? text : 'Unlimited'}
+				</Text>
+			),
+		},
+		{
 			title: 'Tag',
 			key: 'tags',
 			dataIndex: 'tags',
