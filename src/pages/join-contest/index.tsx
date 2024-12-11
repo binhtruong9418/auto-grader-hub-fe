@@ -52,8 +52,8 @@ const JoinContestRequestsPage = () => {
     return listRequests.map((request: any) => ({
       ...request,
       id: request.id,
-      email: request.user.email,
-      contestName: request.contest.contestName,
+      email: request?.user?.email,
+      contestName: request?.contest?.contestName,
       status: request.status,
     }));
   }, [listRequestsData]);
